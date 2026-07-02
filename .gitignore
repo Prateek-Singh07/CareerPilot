@@ -17,3 +17,5 @@ Thumbs.db
 
 # Generated Reports
 *.pdf
+backend/uploads/
+backend/Interview_Report.pdf
