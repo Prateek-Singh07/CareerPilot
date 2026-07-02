@@ -1,0 +1,71 @@
+.loading-screen{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+margin-top:80px;
+
+padding:40px;
+
+background:#1f2937;
+
+border-radius:15px;
+
+box-shadow:0 0 15px rgba(0,0,0,.25);
+
+}
+
+.loading-screen h2{
+
+margin-top:25px;
+
+margin-bottom:10px;
+
+font-size:28px;
+
+}
+
+.loading-screen p{
+
+color:#cbd5e1;
+
+font-size:16px;
+
+}
+
+.spinner{
+
+width:70px;
+
+height:70px;
+
+border:7px solid #374151;
+
+border-top:7px solid #3b82f6;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+0%{
+
+transform:rotate(0deg);
+
+}
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
