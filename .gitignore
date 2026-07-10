@@ -15,6 +15,9 @@ frontend/dist/
 .DS_Store
 Thumbs.db
 
+# Database
+backend/data/
+
 # Generated Reports
 *.pdf
 backend/uploads/
