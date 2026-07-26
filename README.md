@@ -90,29 +90,48 @@ https://github.com/user-attachments/assets/your-video-id
 
 ## 🖼️ Screenshots
 
-<!-- Replace the commented placeholder links below with actual screenshots.
-     Upload images to the screenshots/ directory and uncomment the lines.
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="screenshots/landing.png" alt="Landing Page" width="400" />
+        <br />
+        <em>Landing Page — hero section with features</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/auth.png" alt="Authentication" width="400" />
+        <br />
+        <em>Authentication — signup and login modal</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="screenshots/interview.png" alt="Interview Page" width="400" />
+        <br />
+        <em>Interview — resume upload and question area</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/resume-match.png" alt="Resume Match" width="400" />
+        <br />
+        <em>Resume Match — ATS comparison analyzer</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="screenshots/history.png" alt="History" width="400" />
+        <br />
+        <em>History — past interview sessions overview</em>
+      </td>
+      <td align="center">
+        <em>PDF Report — detailed performance report</em>
+        <br />
+        <em>(add a screenshot of the generated PDF)</em>
+      </td>
+    </tr>
+  </table>
+</div>
 
-     Example:
-     <img src="screenshots/landing.png" alt="Landing Page" width="400" />
--->
-
-<table>
-  <tr>
-    <td align="center" width="50%"><strong>Landing Page</strong><br /><em>Hero section with features showcase</em></td>
-    <td align="center" width="50%"><strong>Authentication</strong><br /><em>Signup and login modal</em></td>
-  </tr>
-  <tr>
-    <td align="center" width="50%"><strong>AI Interview Session</strong><br /><em>Answer questions with real-time feedback</em></td>
-    <td align="center" width="50%"><strong>Resume Match</strong><br /><em>ATS-style resume vs job description comparison</em></td>
-  </tr>
-  <tr>
-    <td align="center" width="50%"><strong>Interview History</strong><br /><em>Past sessions with scores and feedback</em></td>
-    <td align="center" width="50%"><strong>PDF Report</strong><br /><em>Downloadable performance report</em></td>
-  </tr>
-</table>
-
-> **To add screenshots:** Capture your deployed application, save PNG files to `screenshots/`, then add `<img src="screenshots/your-file.png" ... />` inside the table cells above.
+---
 
 ---
 
@@ -127,7 +146,6 @@ https://github.com/user-attachments/assets/your-video-id
 | **Material UI 9** | Component library with custom dark theme |
 | **Framer Motion** | Page transitions and micro-animations |
 | **Axios** | HTTP client with JWT interceptor |
-| **Recharts** | Score visualization |
 | **Recharts** | Score visualization and charts |
 | **Web Speech API** | Voice recording and text-to-speech |
 
