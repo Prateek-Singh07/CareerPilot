@@ -19,23 +19,37 @@
   </p>
 
   <p>
+    <a href="https://ai-career-assistant-b9cs.onrender.com">
+      <img src="https://img.shields.io/badge/Backend-Render-46E3B7?style=flat-square&logo=render" alt="Backend" />
+    </a>
+    <a href="https://ai-career-assistant-b9cs.onrender.com/docs">
+      <img src="https://img.shields.io/badge/API-Swagger-85EA2D?style=flat-square&logo=swagger" alt="API Docs" />
+    </a>
+    <a href="https://ai-career-assistant-b9cs.onrender.com/health">
+      <img src="https://img.shields.io/badge/Health-UP-22c55e?style=flat-square" alt="Health" />
+    </a>
     <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License" />
-    <img src="https://img.shields.io/badge/version-1.0.0-brightgreen?style=flat-square" alt="Version 1.0.0" />
     <img src="https://img.shields.io/badge/python-3.11+-blue?style=flat-square&logo=python" alt="Python 3.11+" />
     <img src="https://img.shields.io/badge/react-19-61DAFB?style=flat-square&logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build Passing" />
-    <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi" alt="FastAPI" />
-    <img src="https://img.shields.io/badge/Gemini_AI-4285F4?style=flat-square&logo=google" alt="Gemini AI" />
   </p>
 </div>
 
 <br />
 
-<!-- Add your demo video/gif here:
-https://github.com/user-attachments/assets/your-video-id
--->
+## 🚀 Live Demo
+
+| Service | URL |
+|---------|-----|
+| **Backend API** | [https://ai-career-assistant-b9cs.onrender.com](https://ai-career-assistant-b9cs.onrender.com) |
+| **API Docs (Swagger)** | [https://ai-career-assistant-b9cs.onrender.com/docs](https://ai-career-assistant-b9cs.onrender.com/docs) |
+| **Health Check** | [https://ai-career-assistant-b9cs.onrender.com/health](https://ai-career-assistant-b9cs.onrender.com/health) |
+
+> 🚧 **Frontend:** Deploy to Vercel and add the URL here.
 
 ---
+
+
 
 ## ✨ Features
 
@@ -530,7 +544,7 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for more informati
 **Karthik Shiva Teja**
 
 - GitHub: [@karthikJKST](https://github.com/karthikJKST)
-- LinkedIn: [Karthik Shiva Teja](https://linkedin.com/in/karthik-shiva-teja) <!-- Add your LinkedIn URL -->
+- LinkedIn: [Karthik Siva Teja](https://www.linkedin.com/in/karthik-siva-teja-jana-a367a0275/)
 - Project: [AI-Career-Assistant](https://github.com/karthikJKST/AI-Career-Assistant)
 
 ---
