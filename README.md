@@ -147,8 +147,6 @@
 
 ---
 
----
-
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -541,7 +539,7 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for more informati
 
 ## 👤 Author
 
-**Karthik Shiva Teja**
+**Karthik Siva Teja**
 
 - GitHub: [@karthikJKST](https://github.com/karthikJKST)
 - LinkedIn: [Karthik Siva Teja](https://www.linkedin.com/in/karthik-siva-teja-jana-a367a0275/)
