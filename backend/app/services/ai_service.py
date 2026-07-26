@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 
-logger = logging.getLogger("skillcortex.services.ai")
+logger = logging.getLogger("hirepilot.services.ai")
 
 load_dotenv()
 

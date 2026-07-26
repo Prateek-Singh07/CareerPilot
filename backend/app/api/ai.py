@@ -12,7 +12,7 @@ from app.services.ai_service import evaluate_answer
 from app.services.pdf_service import generate_pdf
 from app.auth import get_current_user
 
-logger = logging.getLogger("skillcortex.api.ai")
+logger = logging.getLogger("hirepilot.api.ai")
 router = APIRouter(prefix="/api", tags=["Interview"])
 
 
@@ -72,7 +72,7 @@ def download_report(
 
     # Clean up temp directory after the response is sent
     parent_dir = str(Path(pdf_path).parent)
-    if "skillcortex_report_" in parent_dir:
+    if "hirepilot_report_" in parent_dir:
         background_tasks.add_task(shutil.rmtree, parent_dir, ignore_errors=True)
 
     return FileResponse(

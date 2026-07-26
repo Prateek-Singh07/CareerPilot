@@ -11,7 +11,7 @@ from reportlab.platypus import (
 )
 from reportlab.lib.units import inch
 
-logger = logging.getLogger("skillcortex.services.pdf")
+logger = logging.getLogger("hirepilot.services.pdf")
 
 
 def generate_pdf(summary, output_path=None):
@@ -21,7 +21,7 @@ def generate_pdf(summary, output_path=None):
     cleaned up after the response is sent.
     """
     if output_path is None:
-        tmp_dir = tempfile.mkdtemp(prefix="skillcortex_report_")
+        tmp_dir = tempfile.mkdtemp(prefix="hirepilot_report_")
         output_path = os.path.join(tmp_dir, "Interview_Report.pdf")
 
     doc = SimpleDocTemplate(output_path)

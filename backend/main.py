@@ -1,4 +1,4 @@
-"""SkillCortex – Backend API
+"""HirePilot – Backend API
 
 FastAPI application with:
 - SQLite / configurable database (auto-created on startup)
@@ -20,7 +20,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-logger = logging.getLogger("skillcortex")
+logger = logging.getLogger("hirepilot")
 
 # Add the backend directory to sys.path for imports
 sys.path.insert(0, str(Path(__file__).parent))
@@ -74,7 +74,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="SkillCortex API",
+        title="HirePilot API",
         description="Backend for AI-powered interview coaching and resume analysis",
         version="1.1.0",
         docs_url="/docs",
@@ -130,7 +130,7 @@ def create_app() -> FastAPI:
     @app.get("/")
     def root():
         return {
-            "app": "SkillCortex API",
+            "app": "HirePilot API",
             "version": "1.1.0",
             "status": "running",
         }
@@ -150,8 +150,8 @@ def create_app() -> FastAPI:
         init_db()
         logger.info("Database initialized")
 
-        # Create demo account in development mode (SKILLCORTEX_ENV=development)
-        if os.getenv("SKILLCORTEX_ENV") == "development":
+        # Create demo account in development mode (HIREPILOT_ENV=development)
+        if os.getenv("HIREPILOT_ENV") == "development":
             try:
                 from app.database import SessionLocal
                 from app.models.user import User
@@ -159,11 +159,11 @@ def create_app() -> FastAPI:
                 db = SessionLocal()
                 try:
                     existing = db.query(User).filter(
-                        (User.username == "demo") | (User.email == "demo@skillcortex.com")
+                        (User.username == "demo") | (User.email == "demo@hirepilot.app")
                     ).first()
                     if not existing:
                         demo_user = User(
-                            email="demo@skillcortex.com",
+                            email="demo@hirepilot.app",
                             username="demo",
                             hashed_password=get_password_hash("Demo@123"),
                         )

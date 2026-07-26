@@ -1,7 +1,7 @@
 <div align="center">
   <br />
-  <img src="assets/logo.svg" alt="SkillCortex Logo" width="80" height="80" />
-  <h1 align="center">SkillCortex</h1>
+  <img src="assets/logo.svg" alt="HirePilot Logo" width="80" height="80" />
+  <h1 align="center">HirePilot</h1>
   <p align="center">
     <strong>AI-Powered Interview Preparation &amp; Resume Analysis Platform</strong>
     <br />
@@ -296,10 +296,10 @@ Create `backend/.env`:
 GEMINI_API_KEY=your_gemini_api_key_here
 JWT_SECRET_KEY=your_random_secret_key_here
 JWT_EXPIRE_MINUTES=1440
-SKILLCORTEX_ENV=development
+HIREPILOT_ENV=development
 ```
 
-> 💡 Setting `SKILLCORTEX_ENV=development` auto-creates a demo account:
+> 💡 Setting `HIREPILOT_ENV=development` auto-creates a demo account:
 > **Username:** `demo` · **Password:** `Demo@123`
 
 ### 4. Frontend Setup

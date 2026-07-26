@@ -12,7 +12,7 @@ from app.services.resume_reader import read_resume
 from app.services.ai_service import generate_interview_questions
 from app.auth import get_current_user
 
-logger = logging.getLogger("skillcortex.api.resume")
+logger = logging.getLogger("hirepilot.api.resume")
 router = APIRouter(prefix="/api", tags=["Interview"])
 
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "..", "uploads")
@@ -28,7 +28,7 @@ def upload_resume(
         raise HTTPException(status_code=400, detail="Only PDF, DOCX, and DOC files are supported")
 
     # Use a temp directory for uploaded files to prevent orphaned files
-    tmp_dir = tempfile.mkdtemp(prefix="skillcortex_upload_")
+    tmp_dir = tempfile.mkdtemp(prefix="hirepilot_upload_")
     try:
         file_path = os.path.join(tmp_dir, f"{current_user.id}_{file.filename}")
         with open(file_path, "wb") as buffer:

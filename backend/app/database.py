@@ -8,7 +8,7 @@ import logging
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-logger = logging.getLogger("skillcortex.database")
+logger = logging.getLogger("hirepilot.database")
 
 # ── Determine database URL ────────────────────────────────────
 DATABASE_URL = os.getenv("DATABASE_URL")

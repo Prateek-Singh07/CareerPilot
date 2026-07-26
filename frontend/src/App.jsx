@@ -184,7 +184,7 @@ function AppContent() {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              SkillCortex
+              HirePilot
             </Typography>
           </motion.div>
 
@@ -370,14 +370,14 @@ function AppContent() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Psychology sx={{ color: "#6C63FF", fontSize: 20 }} />
               <Typography variant="body2" fontWeight={700} sx={{ background: "linear-gradient(135deg, #6C63FF, #00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                SkillCortex
+                HirePilot
               </Typography>
             </Box>
             <Typography variant="body2" color="text.secondary">
               Built with React 19 + FastAPI + Gemini AI
             </Typography>
             <Typography variant="body2"            color="text.disabled" sx={{ opacity: 0.5 }}>
-              © {new Date().getFullYear()} SkillCortex
+              © {new Date().getFullYear()} HirePilot
             </Typography>
           </Box>
         </Container>
@@ -654,7 +654,7 @@ function LandingPage({ onNavigate }) {
             viewport={{ once: true, margin: "-80px" }}>
             <Box sx={{ textAlign: "center", mb: { xs: 4, md: 6 } }}>
               <Typography variant="h2" sx={{ fontSize: { xs: "1.8rem", md: "2.5rem" }, mb: 1.5 }}>
-                Why SkillCortex?
+                Why HirePilot?
               </Typography>
               <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 500, mx: "auto" }}>
                 The smartest way to prepare for your next interview

@@ -8,7 +8,7 @@ from app.services.resume_match_service import analyze_resume_match
 from app.services.resume_reader import read_resume
 from app.auth import get_current_user
 
-logger = logging.getLogger("skillcortex.api.resume_match")
+logger = logging.getLogger("hirepilot.api.resume_match")
 router = APIRouter(prefix="/api", tags=["Resume Match"])
 
 
