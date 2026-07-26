@@ -3,27 +3,27 @@ import api from "../services/api";
 
 const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+// Lazy initializers restore session from localStorage without triggering setState in an effect
+function getInitialToken() {
+  return localStorage.getItem("auth_token");
+}
 
-  // Restore session from localStorage on mount
-  useEffect(() => {
-    const savedToken = localStorage.getItem("auth_token");
-    const savedUser = localStorage.getItem("auth_user");
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch {
-        // Corrupted data — clear
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("auth_user");
-      }
-    }
-    setLoading(false);
-  }, []);
+function getInitialUser() {
+  try {
+    const saved = localStorage.getItem("auth_user");
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_user");
+    return null;
+  }
+}
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(getInitialUser);
+  const [token, setToken] = useState(getInitialToken);
+  // loading is false because token/user are determined synchronously via lazy initializers above
+  const [loading] = useState(false);
 
   // Listen for forced logout from api interceptor
   useEffect(() => {
@@ -72,6 +72,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");

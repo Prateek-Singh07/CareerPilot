@@ -1,4 +1,7 @@
-"""Interview session models - both in-memory session and DB persistence."""
+"""Interview session models - both in-memory session and DB persistence.
+
+Session state is now isolated per authenticated user via InterviewSessionManager.
+"""
 
 import json
 from datetime import datetime
@@ -37,7 +40,7 @@ class InterviewSessionDB(Base):
 
 
 class InterviewSession:
-    """In-memory interview state for the active session."""
+    """In-memory interview state for a single session."""
 
     def __init__(self):
         self.reset()
@@ -117,4 +120,29 @@ class InterviewSession:
             db.close()
 
 
-interview = InterviewSession()
+class InterviewSessionManager:
+    """Manages per-user interview sessions in memory.
+
+    Each authenticated user gets their own InterviewSession instance,
+    preventing cross-user interference while keeping the existing API identical.
+    """
+
+    def __init__(self):
+        self._sessions: dict[int, InterviewSession] = {}
+
+    def get_session(self, user_id: int) -> InterviewSession:
+        """Return the interview session for a given user.
+
+        Creates a new session if one does not exist.
+        """
+        if user_id not in self._sessions:
+            self._sessions[user_id] = InterviewSession()
+        return self._sessions[user_id]
+
+    def remove_session(self, user_id: int) -> None:
+        """Remove a user's session (e.g. on completion or reset)."""
+        self._sessions.pop(user_id, None)
+
+
+# Singleton manager – the only global state, keyed by user_id
+session_manager = InterviewSessionManager()

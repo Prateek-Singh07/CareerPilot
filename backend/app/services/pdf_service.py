@@ -1,3 +1,6 @@
+import logging
+import os
+import tempfile
 from datetime import datetime
 
 from reportlab.lib.styles import getSampleStyleSheet
@@ -8,8 +11,18 @@ from reportlab.platypus import (
 )
 from reportlab.lib.units import inch
 
+logger = logging.getLogger("skillcortex.services.pdf")
 
-def generate_pdf(summary, output_path="Interview_Report.pdf"):
+
+def generate_pdf(summary, output_path=None):
+    """Generate a PDF interview report. Returns the path to the generated file.
+
+    If output_path is not provided, creates a temporary file that will be
+    cleaned up after the response is sent.
+    """
+    if output_path is None:
+        tmp_dir = tempfile.mkdtemp(prefix="skillcortex_report_")
+        output_path = os.path.join(tmp_dir, "Interview_Report.pdf")
 
     doc = SimpleDocTemplate(output_path)
 
@@ -174,4 +187,5 @@ def generate_pdf(summary, output_path="Interview_Report.pdf"):
 
     doc.build(story)
 
+    logger.info("PDF report generated at: %s", output_path)
     return output_path

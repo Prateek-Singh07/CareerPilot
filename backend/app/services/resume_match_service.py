@@ -1,8 +1,11 @@
 import json
+import logging
 import os
 
 from dotenv import load_dotenv
 import google.generativeai as genai
+
+logger = logging.getLogger("skillcortex.services.resume_match")
 
 load_dotenv()
 
@@ -66,35 +69,25 @@ Rules:
 """
 
     try:
-
         response = model.generate_content(prompt)
-
         text = response.text.strip()
 
         if text.startswith("```json"):
             text = text.replace("```json", "").replace("```", "").strip()
-
         elif text.startswith("```"):
             text = text.replace("```", "").strip()
 
-        return json.loads(text)
+        result = json.loads(text)
+        logger.info("Resume match analysis complete — score: %s%%", result.get("match_percentage"))
+        return result
 
     except Exception as e:
-
-        print(e)
-
+        logger.error("Resume match analysis failed: %s", e)
         return {
-
             "match_percentage": 0,
-
             "strengths": [],
-
             "missing_skills": [],
-
             "suggestions": [
-
                 "Unable to analyze resume currently. Please try again later."
-
             ]
-
         }

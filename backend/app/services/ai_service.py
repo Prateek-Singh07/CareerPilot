@@ -1,7 +1,10 @@
-import os
 import json
+import logging
+import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+
+logger = logging.getLogger("skillcortex.services.ai")
 
 load_dotenv()
 
@@ -42,14 +45,10 @@ Resume:
 """
 
     try:
-
         response = model.generate_content(prompt)
-
         text = response.text.strip()
 
-        print("\n========== GEMINI RAW RESPONSE ==========")
-        print(text)
-        print("=========================================\n")
+        logger.debug("Gemini raw response: %s", text[:200])
 
         if text.startswith("```json"):
             text = text.replace("```json", "").replace("```", "").strip()
@@ -57,18 +56,15 @@ Resume:
             text = text.replace("```", "").strip()
 
         questions = json.loads(text)
-
-        print("Questions:", len(questions))
-
+        logger.info("Generated %d interview questions", len(questions))
         return questions
 
     except Exception as e:
-
-        print(e)
-
+        logger.error("Failed to generate interview questions: %s", e)
         return [
             "Gemini failed to generate questions."
         ]
+
 
 def evaluate_answer(question, answer):
 
@@ -122,7 +118,6 @@ Rules:
 
     try:
         response = model.generate_content(prompt)
-
         text = response.text.strip()
 
         if text.startswith("```json"):
@@ -130,11 +125,12 @@ Rules:
         elif text.startswith("```"):
             text = text.replace("```", "").strip()
 
-        return json.loads(text)
+        result = json.loads(text)
+        logger.info("Evaluated answer — score: %s", result.get("score"))
+        return result
 
     except Exception as e:
-        print("Gemini Error:", e)
-
+        logger.error("Gemini evaluation error: %s", e)
         return {
             "score": 0,
             "communication": 0,

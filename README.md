@@ -270,27 +270,70 @@ Each answer is evaluated across 7 dimensions (scored 1–10):
 
 ## 🚢 Deployment
 
-### Backend (Railway / Render / Fly.io)
+### Backend (Render)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+1. Create a **Web Service** on Render
+2. Set:
+   - **Runtime:** `Python 3.11`
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Root Directory:** `AI-Career-Assistant/backend` (if deploying from monorepo)
+
+3. Add the following **Environment Variables** in Render dashboard:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GEMINI_API_KEY` | ✅ | Google Gemini AI API key |
+| `JWT_SECRET_KEY` | ✅ | Strong random secret (`openssl rand -hex 32`) |
+| `JWT_EXPIRE_MINUTES` | ❌ | Token expiry in minutes (default: 1440) |
+| `CORS_ORIGINS` | ❌ | Comma-separated allowed origins (include your Vercel URL) |
+| `DATABASE_URL` | ❌ | PostgreSQL URL (defaults to SQLite if omitted) |
+| `PORT` | ❌ | Auto-set by Render (default: 8000) |
+
+4. **Render-specific notes:**
+   - The `PORT` environment variable is automatically set by Render — the app reads it at startup
+   - For PostgreSQL: create a Render PostgreSQL database and set `DATABASE_URL` to its internal connection string
+   - For persistent SQLite: use a Render Disk volume mounted at `/data`
+
+### Frontend (Vercel)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+1. Import the `AI-Career-Assistant/frontend` directory to Vercel
+2. The included `vercel.json` ensures SPA routing works
+3. Set the following **Environment Variable** in Vercel dashboard:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VITE_API_URL` | ✅ | URL of your deployed backend (e.g. `https://your-app.onrender.com/api`) |
+
+4. Vercel will auto-detect Vite and run `npm run build`
+
+### Quick Deploy Checklist
+
+- [ ] Backend: `GEMINI_API_KEY` set
+- [ ] Backend: `JWT_SECRET_KEY` set to a strong random value
+- [ ] Backend: `CORS_ORIGINS` includes your Vercel frontend URL
+- [ ] Frontend: `VITE_API_URL` points to your Render backend URL
+- [ ] Frontend: `vercel.json` exists (it does — included in the project)
+- [ ] Test: Visit `https://your-app.onrender.com/health` → `{"status":"UP"}`
+- [ ] Test: Login, upload resume, answer questions, check history
+
+### Environment Files
+
+Copy the example files and fill in your values:
 
 ```bash
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8000
+# Backend
+cp backend/.env.example backend/.env
+# Edit backend/.env with your API keys
+
+# Frontend
+cp frontend/.env.example frontend/.env
+# Edit frontend/.env with your backend URL
 ```
-
-Set environment variables:
-- `GEMINI_API_KEY`
-- `JWT_SECRET_KEY`
-- `JWT_EXPIRE_MINUTES` (optional, defaults to 1440)
-
-### Frontend (Vercel / Netlify)
-
-```bash
-cd frontend
-npm run build
-```
-
-Set `VITE_API_URL` to your deployed backend URL (defaults to `http://127.0.0.1:8000/api`).
 
 ---
 
