@@ -1,131 +1,298 @@
 <div align="center">
+  <br />
+  <img src="assets/logo.svg" alt="SkillCortex Logo" width="80" height="80" />
+  <h1 align="center">SkillCortex</h1>
+  <p align="center">
+    <strong>AI-Powered Interview Preparation &amp; Resume Analysis Platform</strong>
+    <br />
+    Master every interview with real-time AI feedback, resume matching, and personalized coaching.
+  </p>
 
-# 🧠 SkillCortex
+  <p>
+    <a href="#-features"><strong>Features</strong></a> ·
+    <a href="#-screenshots"><strong>Screenshots</strong></a> ·
+    <a href="#-tech-stack"><strong>Tech Stack</strong></a> ·
+    <a href="#-architecture"><strong>Architecture</strong></a> ·
+    <a href="#-getting-started"><strong>Getting Started</strong></a> ·
+    <a href="#-deployment"><strong>Deployment</strong></a> ·
+    <a href="#-api-overview"><strong>API</strong></a>
+  </p>
 
-### *AI-Powered Interview Preparation & Resume Analysis Platform*
-
-**Master Every Interview 🎯**
-
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Gemini AI](https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
-[![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-
-<br />
-
-<a href="#-features">Features</a> •
-<a href="#-tech-stack">Tech Stack</a> •
-<a href="#-getting-started">Getting Started</a> •
-<a href="#-api-documentation">API Docs</a> •
-<a href="#-project-structure">Structure</a> •
-<a href="#-deployment">Deployment</a>
-
-<br />
-
-<img src="https://img.shields.io/badge/Version-1.1.0-blue" alt="Version 1.1.0" />
-<img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
-<img src="https://img.shields.io/badge/Build-Passing-brightgreen" alt="Build Passing" />
-
+  <p>
+    <a href="https://github.com/karthikJKST/AI-Career-Assistant">
+      <img src="https://img.shields.io/github/stars/karthikJKST/AI-Career-Assistant?style=flat-square&logo=github" alt="Stars" />
+    </a>
+    <a href="https://github.com/karthikJKST/AI-Career-Assistant/blob/main/LICENSE">
+      <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License" />
+    </a>
+    <img src="https://img.shields.io/badge/version-1.0.0-brightgreen?style=flat-square" alt="Version 1.0.0" />
+    <img src="https://img.shields.io/badge/python-3.11+-blue?style=flat-square&logo=python" alt="Python 3.11+" />
+    <img src="https://img.shields.io/badge/react-19-61DAFB?style=flat-square&logo=react" alt="React 19" />
+    <img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build Passing" />
+  </p>
 </div>
 
----
+<br />
 
-## 📋 Overview
-
-**SkillCortex** is a full-stack AI application that uses Google's Gemini AI to help candidates prepare for technical interviews. Upload your resume, and the AI generates personalized interview questions. Answer them using text or voice, and get scored across 7 metrics with detailed feedback.
-
-The app also includes a **Resume Match Analyzer** that compares your resume against any job description to identify gaps and improvement areas.
+<!-- Add your demo video/gif here:
+https://github.com/user-attachments/assets/your-video-id
+-->
 
 ---
 
 ## ✨ Features
 
-### 🤖 AI Mock Interviews
-- **Resume-Based Questions** — Gemini AI analyzes your resume and generates 10 tailored questions
-- **7-Metric Scoring** — Communication, Technical Knowledge, Confidence, Grammar, Problem Solving, Completeness, Professionalism
-- **Real-Time Feedback** — Strengths, weaknesses, and actionable suggestions after each answer
-- **Voice Recording** — Speech-to-text for hands-free answering
-- **Text-to-Speech** — Questions read aloud for immersive practice
-- **2-Minute Timer** — Real interview pressure simulation
-- **PDF Reports** — Downloadable interview performance reports
-- **History Tracking** — View all past interview sessions with scores
-
-### 📄 Resume Match Analyzer
-- Upload your resume and paste a job description
-- Get a match percentage score
-- Identify missing skills and keywords
-- Receive tailored improvement recommendations
-
-### 🔐 Authentication
-- JWT-based auth with PyJWT (RFC 7519 compliant)
-- Secure signup/login with bcrypt password hashing
-- Rate-limited endpoints (SlowAPI)
-- Persistent sessions via localStorage
-
-### 🎨 User Experience
-- Dark mode with glassmorphism UI
-- Smooth animations (Framer Motion)
-- Fully responsive design
-- Loading states and transitions
-- Gradient accents and micro-interactions
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" width="33%">
+        <h3>🎯 AI Mock Interviews</h3>
+        <p>Gemini AI generates 10 personalized questions from your resume. Answer with text or voice and get scored across 7 dimensions.</p>
+      </td>
+      <td align="center" width="33%">
+        <h3>📊 Real-Time Feedback</h3>
+        <p>Get instant AI-powered evaluation after every answer — strengths, weaknesses, and actionable suggestions to improve.</p>
+      </td>
+      <td align="center" width="33%">
+        <h3>📄 Resume Match (ATS)</h3>
+        <p>Compare your resume against any job description. Get a match percentage, missing skills, and tailored improvement tips.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" width="33%">
+        <h3>🔐 JWT Authentication</h3>
+        <p>Secure signup/login with bcrypt password hashing, rate-limited endpoints, and persistent sessions via localStorage.</p>
+      </td>
+      <td align="center" width="33%">
+        <h3>📈 Interview History</h3>
+        <p>Track your progress over time. Review past interview sessions, scores, and feedback to measure improvement.</p>
+      </td>
+      <td align="center" width="33%">
+        <h3>📑 PDF Reports</h3>
+        <p>Download detailed interview performance reports with scores across all 7 metrics — perfect for tracking growth.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" width="33%">
+        <h3>🎨 Modern Dark UI</h3>
+        <p>Glassmorphism design with smooth Framer Motion animations, fully responsive, and accessible across all devices.</p>
+      </td>
+      <td align="center" width="33%">
+        <h3>🎤 Voice Support</h3>
+        <p>Speech-to-text for hands-free answering and text-to-speech for questions read aloud — immersive practice experience.</p>
+      </td>
+      <td align="center" width="33%">
+        <h3>⚡ Fast & Lightweight</h3>
+        <p>React 19 + Vite 8 frontend with FastAPI backend. Optimized bundle, lazy loading, and minimal latency.</p>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
-## 🛠 Tech Stack
+## 🖼️ Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="screenshots/landing.png" alt="Landing Page" width="400" />
+        <br />
+        <em>Landing Page</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/auth.png" alt="Authentication" width="400" />
+        <br />
+        <em>Authentication Modal</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="screenshots/interview.png" alt="Interview" width="400" />
+        <br />
+        <em>AI Interview Session</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/resume-match.png" alt="Resume Match" width="400" />
+        <br />
+        <em>Resume Match Analyzer</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="screenshots/history.png" alt="History" width="400" />
+        <br />
+        <em>Interview History</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/report.png" alt="PDF Report" width="400" />
+        <br />
+        <em>PDF Performance Report</em>
+      </td>
+    </tr>
+  </table>
+</div>
+
+> **Note:** Replace the placeholder images above with actual screenshots of your deployed application.
+
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
+
 | Technology | Purpose |
 |-----------|---------|
-| **React 19** | UI framework |
-| **Vite 8** | Build tool & dev server |
-| **Material UI** | Component library (dark theme) |
-| **Framer Motion** | Animations |
-| **Axios** | HTTP client with JWT interceptors |
-| **Web Speech API** | Voice recording & TTS |
+| **React 19** | UI framework with hooks and concurrent features |
+| **Vite 8** | Build tool and development server |
+| **Material UI 9** | Component library with custom dark theme |
+| **Framer Motion** | Page transitions and micro-animations |
+| **Axios** | HTTP client with JWT interceptor |
+| **Zustand** | Lightweight state management |
+| **Recharts** | Score visualization and charts |
+| **Web Speech API** | Voice recording and text-to-speech |
 
 ### Backend
+
 | Technology | Purpose |
 |-----------|---------|
-| **Python 3.10+** | Runtime |
-| **FastAPI** | Web framework |
-| **SQLAlchemy** | ORM with SQLite |
-| **PyJWT 2.13** | JWT auth tokens |
+| **Python 3.11+** | Runtime |
+| **FastAPI** | High-performance async web framework |
+| **SQLAlchemy** | ORM with SQLite / PostgreSQL support |
+| **PyJWT** | JWT token generation and verification |
 | **Passlib + bcrypt** | Password hashing |
-| **Gemini AI** | Question generation & evaluation |
+| **Google Gemini AI** | Question generation and answer evaluation |
 | **PyMuPDF** | PDF text extraction |
 | **ReportLab** | PDF report generation |
 | **SlowAPI** | Rate limiting |
+
+### Deployment
+
+| Service | Purpose |
+|---------|---------|
+| **Render** | Backend API hosting |
+| **Vercel** | Frontend SPA hosting |
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Browser (User)                        │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │              React SPA (Vite)                     │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌───────────────┐   │  │
+│  │  │ Auth UI  │  │ Interview│  │ Resume Match  │   │  │
+│  │  │ (JWT)    │  │   Page   │  │    Page       │   │  │
+│  │  └────┬─────┘  └────┬─────┘  └───────┬───────┘   │  │
+│  │       └─────────────┼─────────────────┘           │  │
+│  │                     │ Axios + Bearer Token         │  │
+│  └─────────────────────┼─────────────────────────────┘  │
+└────────────────────────┼────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                  FastAPI Backend                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────────┐  │
+│  │ Auth     │  │ Resume   │  │  JWT Middleware       │  │
+│  │ Routes   │  │ Routes   │  │  (Bearer Validation)  │  │
+│  └────┬─────┘  └────┬─────┘  └──────────────────────┘  │
+│       │             │                                    │
+│       ▼             ▼                                    │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │              Services Layer                       │   │
+│  │  ┌──────────────┐  ┌─────────────────────────┐   │   │
+│  │  │ AI Service   │  │ Resume Match Service    │   │   │
+│  │  │ (Gemini API) │  │ (Gemini + PyMuPDF)      │   │   │
+│  │  └──────┬───────┘  └─────────────────────────┘   │   │
+│  │         │                                         │   │
+│  │         ▼                                         │   │
+│  │  ┌──────────────────────────────────────────┐    │   │
+│  │  │         Google Gemini AI API              │    │   │
+│  │  └──────────────────────────────────────────┘    │   │
+│  └──────────────────────────────────────────────────┘   │
+│                         │                                │
+│                         ▼                                │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │              SQLite / PostgreSQL                   │   │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────────┐   │   │
+│  │  │  Users   │  │ Sessions │  │    Feedback  │   │   │
+│  │  └──────────┘  └──────────┘  └──────────────┘   │   │
+│  └──────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Authentication Flow
+
+```
+User → POST /api/auth/signup ──→ bcrypt hash password ──→ Store in DB
+User → POST /api/auth/login  ──→ Verify password hash  ──→ Return JWT
+User → [Protected Route]     ──→ Axios attaches Bearer ──→ FastAPI verifies JWT → Response
+```
+
+- JWT tokens are signed with HS256 using a configurable secret key
+- Tokens expire after 24 hours (configurable via `JWT_EXPIRE_MINUTES`)
+- All protected routes use `Depends(get_current_user)` FastAPI dependency
+- Frontend Axios interceptor automatically attaches the Bearer token
+- 401 responses trigger automatic logout via a custom window event
+
+### Interview Workflow
+
+```
+1. Upload Resume (PDF) ──→ PyMuPDF extracts text
+2. Gemini AI generates 10 personalized questions
+3. Questions are loaded into a per-user session
+4. User answers each question (text or voice)
+5. Each answer is evaluated by Gemini AI across 7 metrics
+6. Real-time scores and actionable feedback displayed
+7. After all 10 questions → summary + downloadable PDF report
+```
+
+### Resume Match Workflow
+
+```
+1. Upload Resume (PDF) ──→ PyMuPDF extracts text
+2. Paste job description ──→ Gemini AI compares both
+3. Returns: match percentage, matched/missing skills, recommendations
+```
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- [Google Gemini API key](https://aistudio.google.com/apikey)
 
-### 1. Clone & Install Backend
+- **Python 3.11+**
+- **Node.js 18+**
+- **Google Gemini API key** ([Get one free](https://aistudio.google.com/apikey))
+
+### 1. Clone
 
 ```bash
-cd AI-Career-Assistant/backend
+git clone https://github.com/karthikJKST/AI-Career-Assistant.git
+cd AI-Career-Assistant
+```
+
+### 2. Backend Setup
+
+```bash
+cd backend
 
 # Create virtual environment
 python -m venv venv
 
-# Activate it:
-# Windows:
+# Activate (Windows)
 venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
+# Activate (macOS/Linux)
+# source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Configure Environment
+### 3. Configure Environment
 
 Create `backend/.env`:
 
@@ -133,51 +300,133 @@ Create `backend/.env`:
 GEMINI_API_KEY=your_gemini_api_key_here
 JWT_SECRET_KEY=your_random_secret_key_here
 JWT_EXPIRE_MINUTES=1440
+SKILLCORTEX_ENV=development
 ```
 
-### 3. Install & Run Frontend
+> 💡 Setting `SKILLCORTEX_ENV=development` auto-creates a demo account:
+> **Username:** `demo` · **Password:** `Demo@123`
+
+### 4. Frontend Setup
 
 ```bash
-cd AI-Career-Assistant/frontend
+cd frontend
 npm install
-npm run dev
 ```
 
-### 4. Run Backend
+Create `frontend/.env`:
+
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
+```
+
+### 5. Run the Application
+
+**Terminal 1 — Backend:**
 
 ```bash
-cd AI-Career-Assistant/backend
-venv\Scripts\python main.py
+cd backend
+venv\Scripts\activate
+python main.py
+# → http://127.0.0.1:8000
 ```
 
-### 5. Open in Browser
+**Terminal 2 — Frontend:**
 
-Frontend → **http://localhost:5173** (or Vite's assigned port)
+```bash
+cd frontend
+npm run dev
+# → http://localhost:5173
+```
+
+### 6. Try the Demo
+
+1. Open **http://localhost:5173**
+2. Click **Login** → **Sign Up** to create an account
+3. Or use the demo account: `demo` / `Demo@123`
+4. Upload a resume (PDF) and start practicing!
 
 ---
 
-## 📘 API Documentation
+## 🚢 Deployment
 
-When the backend is running, interactive API docs are at:
+### Backend (Render)
 
-| URL | Type |
-|-----|------|
-| **http://127.0.0.1:8000/docs** | Swagger UI |
-| **http://127.0.0.1:8000/redoc** | ReDoc UI |
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
-### Key Endpoints
+| Setting | Value |
+|---------|-------|
+| **Runtime** | `Python 3.11` |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT` |
+| **Root Directory** | `AI-Career-Assistant/backend` |
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
+**Required Environment Variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `GEMINI_API_KEY` | Your Google Gemini API key |
+| `JWT_SECRET_KEY` | Strong random secret (`openssl rand -hex 32`) |
+| `CORS_ORIGINS` | Your Vercel frontend URL |
+
+### Frontend (Vercel)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+1. Import the `AI-Career-Assistant/frontend` directory
+2. Vercel auto-detects Vite — no additional config needed
+3. Set `VITE_API_URL` to your Render backend URL (e.g., `https://your-app.onrender.com/api`)
+
+### Deployment Checklist
+
+- [ ] `GEMINI_API_KEY` set on Render
+- [ ] `JWT_SECRET_KEY` set to a strong random value on Render
+- [ ] `CORS_ORIGINS` includes your Vercel frontend URL
+- [ ] `VITE_API_URL` points to your Render backend URL
+- [ ] Test: `GET https://your-app.onrender.com/health` → `{"status":"UP"}`
+- [ ] Test: Full auth flow — register, login, upload resume, answer questions
+
+---
+
+## 📘 API Overview
+
+All endpoints are prefixed with `/api`. Interactive docs at `/docs` (Swagger) or `/redoc` (ReDoc) when the backend is running.
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/health` | ❌ | Health check with database status |
 | `POST` | `/api/auth/signup` | ❌ | Create a new account |
 | `POST` | `/api/auth/login` | ❌ | Login, returns JWT token |
 | `GET` | `/api/auth/me` | ✅ | Get current user profile |
-| `POST` | `/api/upload-resume` | ✅ | Upload PDF resume, generate questions |
+| `POST` | `/api/upload-resume` | ✅ | Upload PDF resume, generate interview questions |
 | `GET` | `/api/next-question` | ✅ | Get next interview question |
-| `POST` | `/api/answer` | ✅ | Submit answer, get AI evaluation |
-| `GET` | `/api/download-report` | ✅ | Download interview PDF report |
+| `POST` | `/api/answer` | ✅ | Submit answer, receive AI evaluation and score |
+| `GET` | `/api/download-report` | ✅ | Download PDF performance report |
 | `GET` | `/api/history` | ✅ | View past interview sessions |
-| `POST` | `/api/resume-match` | ✅ | Match resume vs job description |
+| `POST` | `/api/resume-match` | ✅ | Compare resume against job description |
+
+### Scoring Metrics (1–10)
+
+| Metric | Description |
+|--------|-------------|
+| Communication | Clarity, structure, articulation |
+| Technical Knowledge | Depth of domain expertise |
+| Confidence | Certainty in delivery |
+| Grammar | Language correctness |
+| Problem Solving | Analytical approach |
+| Completeness | Coverage of the question |
+| Professionalism | Tone and relevance |
+
+---
+
+## 🔒 Security
+
+- **JWT Authentication** — Tokens signed with HS256, configurable expiry
+- **Password Hashing** — bcrypt via Passlib (industry standard)
+- **Rate Limiting** — Auth endpoints protected by SlowAPI
+- **CORS** — Strict origin control via environment variable
+- **Environment Variables** — All secrets isolated in `.env`, excluded from Git
+- **Database** — SQLite excluded from version control
+- **File Uploads** — Temporary directories, cleaned after processing
 
 ---
 
@@ -187,26 +436,30 @@ When the backend is running, interactive API docs are at:
 AI-Career-Assistant/
 ├── backend/
 │   ├── app/
-│   │   ├── api/              # API route handlers
-│   │   │   ├── ai.py              # Interview Q&A endpoints
-│   │   │   ├── auth_router.py     # Signup, login, /me
-│   │   │   ├── history.py         # Session history
-│   │   │   ├── resume.py          # Resume upload + question gen
-│   │   │   └── resume_match.py    # Resume-JD matcher
+│   │   ├── api/                  # Route handlers
+│   │   │   ├── ai.py             # Interview Q&A endpoints
+│   │   │   ├── auth_router.py    # Signup, login, /me
+│   │   │   ├── history.py        # Session history
+│   │   │   ├── resume.py         # Resume upload + question gen
+│   │   │   └── resume_match.py   # Resume-JD matcher
 │   │   ├── models/               # SQLAlchemy models
 │   │   │   ├── interview.py
 │   │   │   └── user.py
 │   │   ├── services/             # Business logic
-│   │   │   ├── ai_service.py          # Gemini AI integration
-│   │   │   ├── pdf_service.py         # PDF generation
+│   │   │   ├── ai_service.py
+│   │   │   ├── pdf_service.py
 │   │   │   ├── resume_match_service.py
-│   │   │   └── resume_reader.py       # PDF text extraction
+│   │   │   └── resume_reader.py
 │   │   ├── auth.py               # JWT utilities
 │   │   ├── database.py           # DB connection
 │   │   └── schemas.py            # Pydantic models
 │   ├── main.py                   # FastAPI entry point
-│   └── requirements.txt
+│   ├── runtime.txt               # Python version for Render
+│   ├── requirements.txt
+│   └── .env.example
 ├── frontend/
+│   ├── public/
+│   │   └── favicon.svg
 │   ├── src/
 │   │   ├── components/           # React components
 │   │   │   ├── AuthModal.jsx
@@ -218,227 +471,76 @@ AI-Career-Assistant/
 │   │   │   ├── SummaryCard.jsx
 │   │   │   ├── Timer.jsx
 │   │   │   └── UploadSection.jsx
-│   │   ├── context/
+│   │   ├── context/              # React context
 │   │   │   └── AuthContext.jsx
-│   │   ├── services/
-│   │   │   └── api.js            # Axios + JWT interceptors
-│   │   ├── App.jsx               # Main app with routing
+│   │   ├── services/             # API layer
+│   │   │   └── api.js
+│   │   ├── App.jsx               # Main application
 │   │   └── main.jsx              # Entry point
+│   ├── vercel.json               # SPA rewrites
 │   ├── index.html
-│   └── package.json
+│   ├── package.json
+│   └── .env.example
+├── screenshots/                  # Screenshots for README
+├── LICENSE                       # MIT License
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 🔐 Authentication Flow
+## 🗺️ Future Roadmap
 
-```
-User → POST /signup → Account Created → JWT Token Returned
-                                        ↓
-User → POST /login  → Verify Password → JWT Token Returned
-                                        ↓
-User → [Protected Endpoint] → Axios Interceptor attaches Bearer token → FastAPI verifies JWT → Response
-```
-
-### Security Measures
-- Passwords hashed with bcrypt
-- JWT tokens signed with HS256
-- 24-hour token expiry (configurable)
-- Rate limiting on auth routes (SlowAPI)
-- `.env` file excluded from version control
-- SQLite database excluded from Git
-
----
-
-## 🧪 Interview Scoring
-
-Each answer is evaluated across 7 dimensions (scored 1–10):
-
-| Metric | What It Measures |
-|--------|-----------------|
-| **Communication** | Clarity, structure, articulation |
-| **Technical Knowledge** | Depth of domain expertise |
-| **Confidence** | Certainty in delivery |
-| **Grammar** | Language correctness |
-| **Problem Solving** | Analytical approach |
-| **Answer Completeness** | Coverage of the question |
-| **Professionalism** | Tone and relevance |
-
----
-
-## 🚢 Deployment
-
-### Prerequisites
-
-- A [Google Gemini API key](https://aistudio.google.com/apikey)
-- A [Render account](https://render.com)
-- A [Vercel account](https://vercel.com)
-
----
-
-### Backend (Render)
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
-
-1. **Create a Web Service** on Render
-2. **Connect your GitHub repository**
-3. **Configure:**
-
-| Setting | Value |
-|---------|-------|
-| **Runtime** | `Python 3.11` |
-| **Build Command** | `pip install -r requirements.txt` |
-| **Start Command** | `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT` |
-| **Root Directory** | `AI-Career-Assistant/backend` |
-
-4. **Add Environment Variables:**
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GEMINI_API_KEY` | ✅ | Google Gemini AI API key |
-| `JWT_SECRET_KEY` | ✅ | Strong random secret (`openssl rand -hex 32`) |
-| `CORS_ORIGINS` | ✅ | Your Vercel frontend URL (e.g. `https://your-app.vercel.app`) |
-| `JWT_EXPIRE_MINUTES` | ❌ | Token expiry in minutes (default: 1440) |
-| `DATABASE_URL` | ❌ | PostgreSQL URL (defaults to SQLite if omitted) |
-| `PORT` | ❌ | Auto-set by Render (default: 8000) |
-
-5. **Render-specific notes:**
-   - The `PORT` environment variable is automatically set by Render
-   - For PostgreSQL: create a Render PostgreSQL database and set `DATABASE_URL`
-   - For persistent SQLite: use a Render Disk volume mounted at `/data`
-
----
-
-### Frontend (Vercel)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-1. **Import** the `AI-Career-Assistant/frontend` directory to Vercel
-2. **The included `vercel.json`** ensures SPA routing works
-3. **Set Environment Variable:**
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `VITE_API_URL` | ✅ | URL of your deployed backend (e.g. `https://your-app.onrender.com/api`) |
-
-4. **Deploy** — Vercel auto-detects Vite and runs `npm run build`
-
----
-
-### Quick Deploy Checklist
-
-- [ ] Backend: `GEMINI_API_KEY` set
-- [ ] Backend: `JWT_SECRET_KEY` set to a strong random value
-- [ ] Backend: `CORS_ORIGINS` includes your Vercel frontend URL
-- [ ] Frontend: `VITE_API_URL` points to your Render backend URL
-- [ ] Frontend: `vercel.json` exists ✅
-- [ ] Test: Visit `https://your-app.onrender.com/health` → `{"status":"UP"}`
-- [ ] Test: Register, login, upload resume, answer questions, check history
-
----
-
-### Environment Files
-
-```bash
-# Backend
-cp backend/.env.example backend/.env
-# Edit with your API keys
-
-# Frontend
-cp frontend/.env.example frontend/.env
-# Edit VITE_API_URL with your backend URL
-```
-
----
-
-### Development Mode (Demo Account)
-
-For local development, set `SKILLCORTEX_ENV=development` in `backend/.env` to
-auto-create a demo account on startup:
-
-```
-SKILLCORTEX_ENV=development
-```
-
-| Field | Value |
-|-------|-------|
-| **Email** | `demo@skillcortex.com` |
-| **Username** | `demo` |
-| **Password** | `Demo@123` |
-
-> ⚠️ This only works when `SKILLCORTEX_ENV=development` is set. The demo
-> account is **never** created in production.
-
----
-
-### Post-Deployment Verification
-
-After deploying, verify everything is working:
-
-| Test | Expected |
-|------|----------|
-| `GET /health` | `{"status":"UP","database":"connected"}` |
-| `POST /api/auth/signup` | Returns JWT token |
-| `POST /api/auth/login` | Returns JWT token |
-| `POST /api/upload-resume` | Returns question count |
-| `GET /api/next-question` | Returns question or summary |
-| `POST /api/answer` | Returns feedback + score |
-| `GET /api/download-report` | Returns PDF file |
-| `GET /api/history` | Returns session list |
-| `POST /api/resume-match` | Returns match analysis |
-
----
-
-## 📸 Screenshots
-
-> _Coming soon — add screenshots of your deployed app here._
-
-| Page | Description |
-|------|-------------|
-| Landing | Hero section with features and stats |
-| Interview | Upload resume, answer questions, view feedback |
-| Resume Match | Compare resume against job description |
-| History | Past interview sessions with scores |
-| Report | Downloadable PDF performance report |
-| Auth | Signup and login modal |
+- [ ] **PostgreSQL Migration** — Production-ready database with connection pooling
+- [ ] **OAuth Integration** — Sign in with Google, GitHub, LinkedIn
+- [ ] **Team Mode** — Shared interview sessions for peer review
+- [ ] **Real-Time Collaboration** — WebSocket-based live coaching
+- [ ] **Custom Question Bank** — User-curated question collections
+- [ ] **AI Resume Builder** — Generate optimized resumes for specific roles
+- [ ] **Dashboard Analytics** — Visual progress tracking over time
+- [ ] **Email Notifications** — Practice reminders and progress reports
+- [ ] **Mobile App** — React Native or PWA for on-the-go practice
+- [ ] **Multi-language Support** — Interview practice in multiple languages
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repo
-2. Create your branch (`git checkout -b feature/YourFeature`)
-3. Commit changes (`git commit -m 'Add feature'`)
-4. Push to branch (`git push origin feature/YourFeature`)
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow existing code style and conventions
+- Add appropriate logging instead of `print()` statements
+- Ensure all API changes are reflected in the endpoint table
+- Test both frontend and backend before submitting
 
 ---
 
 ## 📄 License
 
-Distributed under the **MIT License**.
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for more information.
 
 ---
 
-## 🙏 Acknowledgments
+## 👤 Author
 
-- **Google Gemini AI** — Question generation and answer evaluation
-- **FastAPI** — Modern Python web framework
-- **React** — UI library
-- **Material UI** — Component library
-- **Framer Motion** — Animation library
-- **PyMuPDF** — PDF processing
+**Karthik Shiva Teja**
+
+- GitHub: [@karthikJKST](https://github.com/karthikJKST)
+- LinkedIn: [Karthik Shiva Teja](https://linkedin.com/in/karthik-shiva-teja) <!-- Add your LinkedIn URL -->
+- Project: [AI-Career-Assistant](https://github.com/karthikJKST/AI-Career-Assistant)
 
 ---
 
 <div align="center">
-  <p>
-    Built with ❤️
-    <br />
-    <a href="https://github.com/karthikJKST/AI-Career-Assistant">GitHub Repo</a> •
-    <a href="https://github.com/karthikJKST/AI-Career-Assistant/issues">Report Bug</a> •
-    <a href="https://github.com/karthikJKST/AI-Career-Assistant/issues">Request Feature</a>
-  </p>
+  <sub>Built with ❤️ using React, FastAPI, and Google Gemini AI</sub>
+  <br />
+  <sub>If you find this project useful, consider giving it a ⭐!</sub>
 </div>
