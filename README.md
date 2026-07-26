@@ -270,46 +270,62 @@ Each answer is evaluated across 7 dimensions (scored 1–10):
 
 ## 🚢 Deployment
 
+### Prerequisites
+
+- A [Google Gemini API key](https://aistudio.google.com/apikey)
+- A [Render account](https://render.com)
+- A [Vercel account](https://vercel.com)
+
+---
+
 ### Backend (Render)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
-1. Create a **Web Service** on Render
-2. Set:
-   - **Runtime:** `Python 3.11`
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
-   - **Root Directory:** `AI-Career-Assistant/backend` (if deploying from monorepo)
+1. **Create a Web Service** on Render
+2. **Connect your GitHub repository**
+3. **Configure:**
 
-3. Add the following **Environment Variables** in Render dashboard:
+| Setting | Value |
+|---------|-------|
+| **Runtime** | `Python 3.11` |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT` |
+| **Root Directory** | `AI-Career-Assistant/backend` |
+
+4. **Add Environment Variables:**
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `GEMINI_API_KEY` | ✅ | Google Gemini AI API key |
 | `JWT_SECRET_KEY` | ✅ | Strong random secret (`openssl rand -hex 32`) |
+| `CORS_ORIGINS` | ✅ | Your Vercel frontend URL (e.g. `https://your-app.vercel.app`) |
 | `JWT_EXPIRE_MINUTES` | ❌ | Token expiry in minutes (default: 1440) |
-| `CORS_ORIGINS` | ❌ | Comma-separated allowed origins (include your Vercel URL) |
 | `DATABASE_URL` | ❌ | PostgreSQL URL (defaults to SQLite if omitted) |
 | `PORT` | ❌ | Auto-set by Render (default: 8000) |
 
-4. **Render-specific notes:**
-   - The `PORT` environment variable is automatically set by Render — the app reads it at startup
-   - For PostgreSQL: create a Render PostgreSQL database and set `DATABASE_URL` to its internal connection string
+5. **Render-specific notes:**
+   - The `PORT` environment variable is automatically set by Render
+   - For PostgreSQL: create a Render PostgreSQL database and set `DATABASE_URL`
    - For persistent SQLite: use a Render Disk volume mounted at `/data`
+
+---
 
 ### Frontend (Vercel)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
-1. Import the `AI-Career-Assistant/frontend` directory to Vercel
-2. The included `vercel.json` ensures SPA routing works
-3. Set the following **Environment Variable** in Vercel dashboard:
+1. **Import** the `AI-Career-Assistant/frontend` directory to Vercel
+2. **The included `vercel.json`** ensures SPA routing works
+3. **Set Environment Variable:**
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `VITE_API_URL` | ✅ | URL of your deployed backend (e.g. `https://your-app.onrender.com/api`) |
 
-4. Vercel will auto-detect Vite and run `npm run build`
+4. **Deploy** — Vercel auto-detects Vite and runs `npm run build`
+
+---
 
 ### Quick Deploy Checklist
 
@@ -317,23 +333,76 @@ Each answer is evaluated across 7 dimensions (scored 1–10):
 - [ ] Backend: `JWT_SECRET_KEY` set to a strong random value
 - [ ] Backend: `CORS_ORIGINS` includes your Vercel frontend URL
 - [ ] Frontend: `VITE_API_URL` points to your Render backend URL
-- [ ] Frontend: `vercel.json` exists (it does — included in the project)
+- [ ] Frontend: `vercel.json` exists ✅
 - [ ] Test: Visit `https://your-app.onrender.com/health` → `{"status":"UP"}`
-- [ ] Test: Login, upload resume, answer questions, check history
+- [ ] Test: Register, login, upload resume, answer questions, check history
+
+---
 
 ### Environment Files
-
-Copy the example files and fill in your values:
 
 ```bash
 # Backend
 cp backend/.env.example backend/.env
-# Edit backend/.env with your API keys
+# Edit with your API keys
 
 # Frontend
 cp frontend/.env.example frontend/.env
-# Edit frontend/.env with your backend URL
+# Edit VITE_API_URL with your backend URL
 ```
+
+---
+
+### Development Mode (Demo Account)
+
+For local development, set `SKILLCORTEX_ENV=development` in `backend/.env` to
+auto-create a demo account on startup:
+
+```
+SKILLCORTEX_ENV=development
+```
+
+| Field | Value |
+|-------|-------|
+| **Email** | `demo@skillcortex.com` |
+| **Username** | `demo` |
+| **Password** | `Demo@123` |
+
+> ⚠️ This only works when `SKILLCORTEX_ENV=development` is set. The demo
+> account is **never** created in production.
+
+---
+
+### Post-Deployment Verification
+
+After deploying, verify everything is working:
+
+| Test | Expected |
+|------|----------|
+| `GET /health` | `{"status":"UP","database":"connected"}` |
+| `POST /api/auth/signup` | Returns JWT token |
+| `POST /api/auth/login` | Returns JWT token |
+| `POST /api/upload-resume` | Returns question count |
+| `GET /api/next-question` | Returns question or summary |
+| `POST /api/answer` | Returns feedback + score |
+| `GET /api/download-report` | Returns PDF file |
+| `GET /api/history` | Returns session list |
+| `POST /api/resume-match` | Returns match analysis |
+
+---
+
+## 📸 Screenshots
+
+> _Coming soon — add screenshots of your deployed app here._
+
+| Page | Description |
+|------|-------------|
+| Landing | Hero section with features and stats |
+| Interview | Upload resume, answer questions, view feedback |
+| Resume Match | Compare resume against job description |
+| History | Past interview sessions with scores |
+| Report | Downloadable PDF performance report |
+| Auth | Signup and login modal |
 
 ---
 

@@ -85,28 +85,27 @@ def create_app() -> FastAPI:
     app.state.limiter = limiter
 
     # ── CORS ─────────────────────────────────────────────────
-    DEFAULT_CORS_ORIGINS = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ]
+    # In development, allow any localhost origin (dynamic ports).
+    # In production, set CORS_ORIGINS env var to your frontend URL(s).
+    cors_kwargs: dict = {
+        "allow_credentials": True,
+        "allow_methods": ["*"],
+        "allow_headers": ["*"],
+    }
     cors_env = os.getenv("CORS_ORIGINS")
     if cors_env:
-        CORS_ORIGINS = [origin.strip() for origin in cors_env.split(",")]
+        cors_kwargs["allow_origins"] = [
+            origin.strip() for origin in cors_env.split(",")
+        ]
     else:
-        CORS_ORIGINS = DEFAULT_CORS_ORIGINS
         logger.info(
-            "CORS_ORIGINS not set — using defaults: %s. "
-            "Set CORS_ORIGINS (comma-separated) in .env for production.",
-            DEFAULT_CORS_ORIGINS,
+            "CORS_ORIGINS not set — allowing all localhost origins. "
+            "Set CORS_ORIGINS (comma-separated) in .env for production."
         )
-
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=CORS_ORIGINS,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+        cors_kwargs["allow_origin_regex"] = (
+            r"https?://(localhost|127\.0\.0\.1)(:[0-9]+)?"
+        )
+    app.add_middleware(CORSMiddleware, **cors_kwargs)
 
     # ── Rate limit error handler ─────────────────────────────
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
@@ -150,6 +149,33 @@ def create_app() -> FastAPI:
     def on_startup():
         init_db()
         logger.info("Database initialized")
+
+        # Create demo account in development mode (SKILLCORTEX_ENV=development)
+        if os.getenv("SKILLCORTEX_ENV") == "development":
+            try:
+                from app.database import SessionLocal
+                from app.models.user import User
+                from app.auth import get_password_hash
+                db = SessionLocal()
+                try:
+                    existing = db.query(User).filter(
+                        (User.username == "demo") | (User.email == "demo@skillcortex.com")
+                    ).first()
+                    if not existing:
+                        demo_user = User(
+                            email="demo@skillcortex.com",
+                            username="demo",
+                            hashed_password=get_password_hash("Demo@123"),
+                        )
+                        db.add(demo_user)
+                        db.commit()
+                        logger.info("Demo account created: demo / Demo@123")
+                    else:
+                        logger.info("Demo account already exists")
+                finally:
+                    db.close()
+            except Exception as exc:
+                logger.warning("Could not create demo account: %s", exc)
 
     return app
 

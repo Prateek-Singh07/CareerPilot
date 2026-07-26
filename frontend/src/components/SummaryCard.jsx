@@ -12,7 +12,13 @@ export default function SummaryCard({ interviewSummary, resetInterview }) {
       link.href = url; link.setAttribute("download", "Interview_Report.pdf");
       document.body.appendChild(link); link.click(); link.remove();
       window.URL.revokeObjectURL(url);
-    } catch (err) { console.error(err); alert("Failed to download report."); }
+    } catch (err) {
+      if (err.response?.status === 400) {
+        // No interview session yet — expected, not an error
+        return;
+      }
+      console.error("Download failed:", err);
+    }
   };
 
   const avg = interviewSummary.average_score;

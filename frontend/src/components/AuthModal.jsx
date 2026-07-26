@@ -78,15 +78,17 @@ export default function AuthModal({ open, onClose }) {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth
-      TransitionProps={{ mountOnEnter: true, unmountOnExit: true }}
-      PaperProps={{
-        sx: {
-          borderRadius: 4,
-          background: "rgba(17,17,40,0.96)",
-          backdropFilter: "blur(32px)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
-          overflow: "hidden",
+      slotProps={{
+        transition: { mountOnEnter: true, unmountOnExit: true },
+        paper: {
+          sx: {
+            borderRadius: 4,
+            background: "rgba(17,17,40,0.96)",
+            backdropFilter: "blur(32px)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
+            overflow: "hidden",
+          },
         },
       }}>
       {/* Header */}
@@ -148,32 +150,36 @@ export default function AuthModal({ open, onClose }) {
               <TextField fullWidth label="Username" variant="outlined"
                 value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)}
                 sx={{ mb: 2, ...inputSx }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                      </InputAdornment>
+                    ),
+                  },
                 }} />
 
               <TextField fullWidth label="Password"
                 type={showPassword ? "text" : "password"} variant="outlined"
                 value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}
                 sx={{ mb: 1, ...inputSx }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Lock sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton size="small" onClick={() => setShowPassword(!showPassword)}
-                        sx={{ color: "text.secondary" }}>
-                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Lock sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton size="small" onClick={() => setShowPassword(!showPassword)}
+                          sx={{ color: "text.secondary" }}>
+                          {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
                 }} />
 
               <AnimatePresence>
@@ -207,43 +213,49 @@ export default function AuthModal({ open, onClose }) {
               <TextField fullWidth label="Email" type="email" variant="outlined"
                 value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)}
                 sx={{ mb: 2, ...inputSx }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                      </InputAdornment>
+                    ),
+                  },
                 }} />
 
               <TextField fullWidth label="Username" variant="outlined"
                 value={signupUsername} onChange={(e) => setSignupUsername(e.target.value)}
                 sx={{ mb: 2, ...inputSx }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                      </InputAdornment>
+                    ),
+                  },
                 }} />
 
               <TextField fullWidth label="Password"
                 type={showPassword ? "text" : "password"} variant="outlined"
                 value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)}
                 sx={{ mb: 1, ...inputSx }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Lock sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton size="small" onClick={() => setShowPassword(!showPassword)}
-                        sx={{ color: "text.secondary" }}>
-                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Lock sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton size="small" onClick={() => setShowPassword(!showPassword)}
+                          sx={{ color: "text.secondary" }}>
+                          {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
                 }} />
 
               {/* Password hint */}
