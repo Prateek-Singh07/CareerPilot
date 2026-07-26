@@ -19,16 +19,13 @@
   </p>
 
   <p>
-    <a href="https://github.com/karthikJKST/AI-Career-Assistant">
-      <img src="https://img.shields.io/github/stars/karthikJKST/AI-Career-Assistant?style=flat-square&logo=github" alt="Stars" />
-    </a>
-    <a href="https://github.com/karthikJKST/AI-Career-Assistant/blob/main/LICENSE">
-      <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License" />
-    </a>
+    <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License" />
     <img src="https://img.shields.io/badge/version-1.0.0-brightgreen?style=flat-square" alt="Version 1.0.0" />
     <img src="https://img.shields.io/badge/python-3.11+-blue?style=flat-square&logo=python" alt="Python 3.11+" />
     <img src="https://img.shields.io/badge/react-19-61DAFB?style=flat-square&logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build Passing" />
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/Gemini_AI-4285F4?style=flat-square&logo=google" alt="Gemini AI" />
   </p>
 </div>
 
@@ -93,48 +90,29 @@ https://github.com/user-attachments/assets/your-video-id
 
 ## 🖼️ Screenshots
 
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <img src="screenshots/landing.png" alt="Landing Page" width="400" />
-        <br />
-        <em>Landing Page</em>
-      </td>
-      <td align="center">
-        <img src="screenshots/auth.png" alt="Authentication" width="400" />
-        <br />
-        <em>Authentication Modal</em>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img src="screenshots/interview.png" alt="Interview" width="400" />
-        <br />
-        <em>AI Interview Session</em>
-      </td>
-      <td align="center">
-        <img src="screenshots/resume-match.png" alt="Resume Match" width="400" />
-        <br />
-        <em>Resume Match Analyzer</em>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img src="screenshots/history.png" alt="History" width="400" />
-        <br />
-        <em>Interview History</em>
-      </td>
-      <td align="center">
-        <img src="screenshots/report.png" alt="PDF Report" width="400" />
-        <br />
-        <em>PDF Performance Report</em>
-      </td>
-    </tr>
-  </table>
-</div>
+<!-- Replace the commented placeholder links below with actual screenshots.
+     Upload images to the screenshots/ directory and uncomment the lines.
 
-> **Note:** Replace the placeholder images above with actual screenshots of your deployed application.
+     Example:
+     <img src="screenshots/landing.png" alt="Landing Page" width="400" />
+-->
+
+<table>
+  <tr>
+    <td align="center" width="50%"><strong>Landing Page</strong><br /><em>Hero section with features showcase</em></td>
+    <td align="center" width="50%"><strong>Authentication</strong><br /><em>Signup and login modal</em></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><strong>AI Interview Session</strong><br /><em>Answer questions with real-time feedback</em></td>
+    <td align="center" width="50%"><strong>Resume Match</strong><br /><em>ATS-style resume vs job description comparison</em></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><strong>Interview History</strong><br /><em>Past sessions with scores and feedback</em></td>
+    <td align="center" width="50%"><strong>PDF Report</strong><br /><em>Downloadable performance report</em></td>
+  </tr>
+</table>
+
+> **To add screenshots:** Capture your deployed application, save PNG files to `screenshots/`, then add `<img src="screenshots/your-file.png" ... />` inside the table cells above.
 
 ---
 
@@ -144,12 +122,12 @@ https://github.com/user-attachments/assets/your-video-id
 
 | Technology | Purpose |
 |-----------|---------|
-| **React 19** | UI framework with hooks and concurrent features |
+| **React 19** | UI framework |
 | **Vite 8** | Build tool and development server |
 | **Material UI 9** | Component library with custom dark theme |
 | **Framer Motion** | Page transitions and micro-animations |
 | **Axios** | HTTP client with JWT interceptor |
-| **Zustand** | Lightweight state management |
+| **Recharts** | Score visualization |
 | **Recharts** | Score visualization and charts |
 | **Web Speech API** | Voice recording and text-to-speech |
 
@@ -540,7 +518,5 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for more informati
 ---
 
 <div align="center">
-  <sub>Built with ❤️ using React, FastAPI, and Google Gemini AI</sub>
-  <br />
-  <sub>If you find this project useful, consider giving it a ⭐!</sub>
+  <sub>Built with React, FastAPI, and Google Gemini AI</sub>
 </div>
