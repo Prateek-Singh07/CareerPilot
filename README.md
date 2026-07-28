@@ -39,13 +39,23 @@
 
 ## 🚀 Live Demo
 
+
 | Service | URL |
 |---------|-----|
-| **Backend API** | [https://ai-career-assistant-b9cs.onrender.com](https://ai-career-assistant-b9cs.onrender.com) |
-| **API Docs (Swagger)** | [https://ai-career-assistant-b9cs.onrender.com/docs](https://ai-career-assistant-b9cs.onrender.com/docs) |
-| **Health Check** | [https://ai-career-assistant-b9cs.onrender.com/health](https://ai-career-assistant-b9cs.onrender.com/health) |
+| **Frontend Demo** | https://ai-career-assistant-brown-two.vercel.app/ |
+| **Backend API** | https://ai-career-assistant-b9cs.onrender.com |
+| **API Docs (Swagger)** | https://ai-career-assistant-b9cs.onrender.com/docs |
+| **Health Check** | https://ai-career-assistant-b9cs.onrender.com/health |
 
-> 🚧 **Frontend:** Deploy to Vercel and add the URL here.
+### Frontend
+The React frontend is deployed on **Vercel** and provides the complete AI Career Assistant experience.
+
+**Live Demo:** https://ai-career-assistant-brown-two.vercel.app/
+
+### Backend
+The FastAPI backend is deployed on **Render** and powers resume analysis, interview generation, and AI evaluation services.
+
+> **Note:** The backend may take 30–60 seconds to respond on the first request due to Render's free-tier cold starts.
 
 ---
 
