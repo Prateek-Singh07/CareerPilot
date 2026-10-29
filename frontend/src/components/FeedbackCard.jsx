@@ -6,18 +6,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const metrics = [
-  { key: "communication", label: "Communication", color: "#6C63FF" },
-  { key: "technical_knowledge", label: "Technical Knowledge", color: "#00D4FF" },
-  { key: "confidence", label: "Confidence", color: "#22c55e" },
-  { key: "grammar", label: "Grammar", color: "#f59e0b" },
-  { key: "problem_solving", label: "Problem Solving", color: "#FF6B6B" },
-  { key: "answer_completeness", label: "Completeness", color: "#a855f7" },
-  { key: "professionalism", label: "Professionalism", color: "#14b8a6" },
-];
-
 export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
+  const metrics = [
+    { key: "communication", label: "Communication", color: theme.palette.primary.main },
+    { key: "technical_knowledge", label: "Technical Knowledge", color: theme.palette.secondary.main },
+    { key: "confidence", label: "Confidence", color: theme.palette.primary.main },
+    { key: "grammar", label: "Grammar", color: theme.palette.secondary.main },
+    { key: "problem_solving", label: "Problem Solving", color: theme.palette.primary.main },
+    { key: "answer_completeness", label: "Completeness", color: theme.palette.secondary.main },
+    { key: "professionalism", label: "Professionalism", color: theme.palette.primary.main },
+  ];
 
   const radarData = metrics.map((m) => ({
     metric: m.label,
@@ -25,122 +26,107 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
     fullMark: 10,
   }));
 
+  const overallScore = feedback.score || 0;
+  const scoreColor = overallScore >= 7
+    ? (isDark ? "#81C784" : "#2E7D32")
+    : overallScore >= 5
+    ? (isDark ? "#FFB74D" : "#ED6C02")
+    : (isDark ? "#EF5350" : "#D32F2F");
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.3 }}
     >
       <Card sx={{
-        p: { xs: 2.5, md: 4 },
+        p: { xs: 3, md: 4 },
         mt: 4,
-        borderRadius: 3,
-        border: "1px solid rgba(108,99,255,0.1)",
-        position: "relative",
-        overflow: "hidden",
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 3,
-          background: "linear-gradient(90deg, #6C63FF, #00D4FF, #a855f7)",
-          opacity: 0.6,
-        },
+        borderColor: isDark ? "rgba(217, 149, 115, 0.25)" : "rgba(185, 111, 80, 0.2)",
       }}>
         {/* Header */}
         <Box sx={{ textAlign: "center", mb: 3 }}>
           <Box sx={{
-            display: "inline-flex", p: 1.5, borderRadius: 2,
-            background: "rgba(108,99,255,0.1)", mb: 1.5,
+            display: "inline-flex", p: 1.5, borderRadius: 2.5,
+            bgcolor: isDark ? "rgba(217, 149, 115, 0.15)" : "rgba(185, 111, 80, 0.12)",
+            color: "primary.main", mb: 1,
           }}>
-            <TrendingUp sx={{ fontSize: 32, color: "#6C63FF" }} />
+            <TrendingUp sx={{ fontSize: 28 }} />
           </Box>
-          <Typography variant="h5" fontWeight={700} gutterBottom>
-            AI Feedback
+          <Typography variant="h5" fontWeight={800} sx={{ color: "text.primary", mb: 1 }}>
+            AI Evaluation & Feedback
           </Typography>
           <Box sx={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 1 }}>
             <Typography variant="h2" fontWeight={900} sx={{
-              color: (averageScore || 0) >= 7 ? "#22c55e" : (averageScore || 0) >= 5 ? "#f59e0b" : "#FF6B6B",
+              color: scoreColor,
               fontSize: { xs: "2.5rem", md: "3rem" },
             }}>
-              {averageScore || 0}
+              {overallScore}
             </Typography>
-            <Typography variant="h5" color="text.secondary" sx={{ fontWeight: 500 }}>/10</Typography>
+            <Typography variant="h5" sx={{ color: "text.secondary", fontWeight: 600 }}>/ 10</Typography>
           </Box>
-          <Typography variant="caption" color="text.secondary">
-            {(averageScore || 0) >= 9 ? "Outstanding!" : (averageScore || 0) >= 7 ? "Great Job!" : (averageScore || 0) >= 5 ? "Good Effort" : "Keep Practicing"}
+          <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 600 }}>
+            Running Session Average: {averageScore || 0}/10
           </Typography>
         </Box>
 
         {/* Radar Chart */}
-        <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-          <ResponsiveContainer width="100%" height={280}>
-            <RadarChart cx="50%" cy="50%" outerRadius="78%" data={radarData}>
-              <PolarGrid stroke="rgba(255,255,255,0.06)" />
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
+          <ResponsiveContainer width="100%" height={260}>
+            <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
+              <PolarGrid stroke={isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(51, 44, 40, 0.12)"} />
               <PolarAngleAxis
                 dataKey="metric"
-                tick={{
-                  fill: theme.palette.text.secondary,
-                  fontSize: 11,
-                  fontWeight: 500,
-                }}
+                tick={{ fill: isDark ? "#B4AAA0" : "#776D65", fontSize: 11, fontWeight: 600 }}
               />
               <PolarRadiusAxis
                 angle={30}
                 domain={[0, 10]}
-                tick={{ fill: "rgba(255,255,255,0.15)", fontSize: 9 }}
+                tick={{ fill: isDark ? "#847A70" : "#9E948C", fontSize: 9 }}
                 tickCount={6}
               />
               <Radar
                 name="Score"
                 dataKey="score"
-                stroke="#6C63FF"
-                fill="#6C63FF"
-                fillOpacity={0.2}
-                strokeWidth={2.5}
-                animationDuration={800}
-                animationBegin={200}
+                stroke={theme.palette.primary.main}
+                fill={theme.palette.primary.main}
+                fillOpacity={isDark ? 0.28 : 0.2}
+                strokeWidth={2}
               />
             </RadarChart>
           </ResponsiveContainer>
         </Box>
 
-        {/* Metric Scores Grid */}
+        {/* 7 Dimensions Grid */}
         <Box sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" },
           gap: 1.5,
           mb: 3,
         }}>
           {metrics.map((m) => (
             <Box key={m.key} sx={{
               p: 1.5,
-              borderRadius: 2,
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.04)",
+              borderRadius: 2.5,
+              bgcolor: isDark ? "#2B2824" : "#F8F6F2",
+              border: `1px solid ${theme.palette.divider}`,
             }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}>
-                <Typography variant="caption" fontWeight={600} color="text.secondary">
+                <Typography variant="caption" fontWeight={700} sx={{ color: "text.primary" }}>
                   {m.label}
                 </Typography>
-                <Typography variant="caption" fontWeight={700} sx={{ color: m.color }}>
-                  {feedback[m.key] || 0}/10
+                <Typography variant="caption" fontWeight={800} sx={{ color: m.color }}>
+                  {feedback[m.key] || 0} / 10
                 </Typography>
               </Box>
               <LinearProgress
                 variant="determinate"
-                value={feedback[m.key] * 10 || 0}
+                value={(feedback[m.key] || 0) * 10}
                 sx={{
                   height: 5,
                   borderRadius: 3,
-                  bgcolor: "rgba(255,255,255,0.04)",
-                  "& .MuiLinearProgress-bar": {
-                    bgcolor: m.color,
-                    borderRadius: 3,
-                    transition: "transform 0.6s ease",
-                  },
+                  bgcolor: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(51, 44, 40, 0.08)",
+                  "& .MuiLinearProgress-bar": { bgcolor: m.color },
                 }}
               />
             </Box>
@@ -149,10 +135,10 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
 
         {/* Strengths */}
         <Box sx={{ mb: 2.5 }}>
-          <Typography variant="subtitle2" fontWeight={700} sx={{
-            mb: 1, display: "flex", alignItems: "center", gap: 1, color: "#22c55e",
+          <Typography variant="subtitle2" fontWeight={800} sx={{
+            mb: 1, display: "flex", alignItems: "center", gap: 1, color: isDark ? "#81C784" : "#2E7D32",
           }}>
-            <CheckCircle sx={{ fontSize: 18 }} /> Strengths
+            <CheckCircle sx={{ fontSize: 18 }} /> What You Did Well
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.8 }}>
             {(feedback.strengths || []).map((item, i) => (
@@ -161,9 +147,9 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
                 label={item}
                 size="small"
                 sx={{
-                  bgcolor: "rgba(34,197,94,0.08)",
-                  color: "#22c55e",
-                  fontWeight: 500,
+                  bgcolor: isDark ? "rgba(102, 187, 106, 0.15)" : "rgba(46, 125, 50, 0.1)",
+                  color: isDark ? "#A5D6A7" : "#2E7D32",
+                  fontWeight: 600,
                   borderRadius: 1.5,
                 }}
               />
@@ -171,12 +157,12 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
           </Box>
         </Box>
 
-        {/* Weaknesses */}
+        {/* Areas to Improve */}
         <Box sx={{ mb: 2.5 }}>
-          <Typography variant="subtitle2" fontWeight={700} sx={{
-            mb: 1, display: "flex", alignItems: "center", gap: 1, color: "#FF6B6B",
+          <Typography variant="subtitle2" fontWeight={800} sx={{
+            mb: 1, display: "flex", alignItems: "center", gap: 1, color: isDark ? "#FFB74D" : "#ED6C02",
           }}>
-            <Warning sx={{ fontSize: 18 }} /> Areas to Improve
+            <Warning sx={{ fontSize: 18 }} /> Areas for Growth
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.8 }}>
             {(feedback.weaknesses || []).map((item, i) => (
@@ -185,9 +171,9 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
                 label={item}
                 size="small"
                 sx={{
-                  bgcolor: "rgba(255,107,107,0.08)",
-                  color: "#FF6B6B",
-                  fontWeight: 500,
+                  bgcolor: isDark ? "rgba(255, 167, 38, 0.15)" : "rgba(237, 108, 2, 0.1)",
+                  color: isDark ? "#FFCC80" : "#ED6C02",
+                  fontWeight: 600,
                   borderRadius: 1.5,
                 }}
               />
@@ -197,10 +183,10 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
 
         {/* Suggestions */}
         <Box sx={{ mb: 3 }}>
-          <Typography variant="subtitle2" fontWeight={700} sx={{
-            mb: 1, display: "flex", alignItems: "center", gap: 1, color: "#00D4FF",
+          <Typography variant="subtitle2" fontWeight={800} sx={{
+            mb: 1, display: "flex", alignItems: "center", gap: 1, color: "primary.main",
           }}>
-            <TipsAndUpdates sx={{ fontSize: 18 }} /> Suggestions
+            <TipsAndUpdates sx={{ fontSize: 18 }} /> Actionable Recommendations
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.8 }}>
             {(feedback.suggestions || []).map((item, i) => (
@@ -209,9 +195,9 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
                 label={item}
                 size="small"
                 sx={{
-                  bgcolor: "rgba(0,212,255,0.08)",
-                  color: "#00D4FF",
-                  fontWeight: 500,
+                  bgcolor: isDark ? "rgba(217, 149, 115, 0.15)" : "rgba(185, 111, 80, 0.1)",
+                  color: "primary.main",
+                  fontWeight: 600,
                   borderRadius: 1.5,
                 }}
               />
@@ -223,16 +209,17 @@ export default function FeedbackCard({ feedback, averageScore, nextQuestion }) {
         <Button
           variant="contained"
           fullWidth
+          size="large"
           onClick={nextQuestion}
+          endIcon={<ArrowForward />}
           sx={{
             py: 1.5,
-            borderRadius: 2,
-            background: "linear-gradient(135deg, #6C63FF, #00D4FF)",
-            fontSize: "0.95rem",
-            "&:hover": { boxShadow: "0 8px 25px rgba(108,99,255,0.35)" },
+            borderRadius: 2.5,
+            fontWeight: 700,
+            fontSize: "0.98rem",
           }}
         >
-          Next Question <ArrowForward sx={{ ml: 1, fontSize: 18 }} />
+          Continue to Next Question
         </Button>
       </Card>
     </motion.div>

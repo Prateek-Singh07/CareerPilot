@@ -8,7 +8,7 @@ import logging
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-logger = logging.getLogger("hirepilot.database")
+logger = logging.getLogger("careerpilot.database")
 
 # ── Determine database URL ────────────────────────────────────
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -58,4 +58,12 @@ def init_db():
     """Create all tables. Called at startup."""
     from app.models.user import User  # noqa: F401 – registers model
     from app.models.interview import InterviewSessionDB  # noqa: F401
+    from app.models.roadmap import CareerRoadmapDB  # noqa: F401
+    from app.models.profile import CareerProfileDB  # noqa: F401
     Base.metadata.create_all(bind=engine)
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("ALTER TABLE interview_sessions ADD COLUMN is_demo INTEGER DEFAULT 0"))
+            conn.commit()
+    except Exception:
+        pass  # Column already exists or fresh table

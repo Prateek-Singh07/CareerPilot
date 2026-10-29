@@ -1,24 +1,64 @@
-# Python
-backend/venv/
-backend/__pycache__/
-backend/**/*.pyc
+# =========================
+# Environment variables / secrets
+# =========================
+/.env
+/.env.*
+!.env.example
 backend/.env
 backend/app/.env
-# React
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+!frontend/.env.example
+!frontend/.env.production
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+backend/venv/
+backend/.venv/
+.pytest_cache/
+
+# =========================
+# React / Node / Vite
+# =========================
+node_modules/
 frontend/node_modules/
+dist/
 frontend/dist/
+.vite/
 
-# VS Code
+# =========================
+# IDEs and operating systems
+# =========================
 .vscode/
-
-# OS
+.idea/
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Database
+# =========================
+# Databases and local data
+# =========================
 backend/data/
+*.sqlite
+*.sqlite3
+*.db
 
-# Generated Reports
-*.pdf
+# =========================
+# Uploaded files and generated reports
+# =========================
 backend/uploads/
+*.log
+*.tmp
+*.bak
 backend/Interview_Report.pdf
+backend/CareerPilot_Interview_Report.pdf
+
+# Generated PDF reports (review before committing exceptions)
+*.pdf

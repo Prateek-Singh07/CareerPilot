@@ -23,3 +23,7 @@ bcrypt==4.0.1
 # Config & Rate Limiting
 pydantic-settings==2.14.2
 slowapi==0.1.10
+
+# Testing
+pytest==9.2.0
+httpx==0.28.1

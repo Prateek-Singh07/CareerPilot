@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: hirepilot-api
+    name: careerpilot-api
     env: python
     plan: free
     rootDirectory: backend
@@ -17,3 +17,9 @@ services:
         sync: false
       - key: JWT_EXPIRE_MINUTES
         value: "1440"
+      - key: GEMINI_MODEL
+        value: "gemini-3.5-flash"
+      - key: CAREERPILOT_ENV
+        value: "development"
+      - key: HIREPILOT_ENV
+        value: "development"

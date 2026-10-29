@@ -1,15 +1,26 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Box, Typography, Button } from "@mui/material";
-import { CloudUpload, Description, CheckCircle, InsertDriveFile, Close } from "@mui/icons-material";
+import { Box, Typography, Button, Alert, useTheme } from "@mui/material";
+import { CloudUpload, Description, InsertDriveFile, Close } from "@mui/icons-material";
 
 export default function UploadSection({ setFile, uploadResume }) {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [dragOver, setDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleFile = (file) => {
     if (!file) return;
+    setError("");
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+      setError("Only PDF files are supported. Please select a .pdf document.");
+      setSelectedFile(null);
+      setFile(null);
+      return;
+    }
     setSelectedFile(file);
     setFile(file);
   };
@@ -20,156 +31,181 @@ export default function UploadSection({ setFile, uploadResume }) {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
+  const handleUseSampleResume = () => {
+    const sampleBlob = new Blob(["%PDF-1.4 Demonstration Resume for CareerPilot AI"], { type: "application/pdf" });
+    const dummyFile = new File([sampleBlob], "Sample_Candidate_Resume.pdf", { type: "application/pdf" });
+    setSelectedFile(dummyFile);
+    setFile(dummyFile);
+    setError("");
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}>
+      transition={{ duration: 0.35 }}
+    >
       <Box sx={{ textAlign: "center", mb: { xs: 3, md: 4 } }}>
-        <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
-          <Box sx={{
-            display: "inline-flex", p: 2, borderRadius: 3,
-            background: "rgba(108,99,255,0.1)", mb: 2,
-          }}>
-            <Description sx={{ fontSize: 48, color: "#6C63FF" }} />
-          </Box>
-        </motion.div>
-        <Typography variant="h4" fontWeight={800} gutterBottom sx={{ fontSize: { xs: "1.5rem", md: "2rem" } }}>
+        <Box sx={{
+          display: "inline-flex", p: 1.5, borderRadius: 3,
+          bgcolor: isDark ? "rgba(217, 149, 115, 0.15)" : "rgba(185, 111, 80, 0.12)",
+          color: "primary.main", mb: 1.5,
+        }}>
+          <Description sx={{ fontSize: 36 }} />
+        </Box>
+        <Typography variant="h4" fontWeight={800} gutterBottom sx={{ color: "text.primary", fontSize: { xs: "1.6rem", md: "2.1rem" } }}>
           Upload Your Resume
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 450, mx: "auto" }}>
-          Upload your resume and AI will generate personalized interview questions based on your experience
+        <Typography variant="body1" sx={{ color: "text.secondary", maxWidth: 460, mx: "auto" }}>
+          Upload your PDF resume to analyze your experience and generate tailored technical interview questions.
         </Typography>
       </Box>
 
       {/* Drop Zone */}
-      <motion.div whileHover={{ scale: 1.005 }} transition={{ duration: 0.2 }}>
-        <Box
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files[0]); }}
-          sx={{
-            p: { xs: 4, md: 6 },
-            borderRadius: 4,
-            textAlign: "center",
-            cursor: "pointer",
-            position: "relative",
-            overflow: "hidden",
-            background: dragOver
-              ? "linear-gradient(135deg, rgba(108,99,255,0.12), rgba(0,212,255,0.06))"
-              : "linear-gradient(135deg, rgba(108,99,255,0.04), rgba(0,212,255,0.02))",
-            border: dragOver
-              ? "2px solid #6C63FF"
-              : "2px dashed rgba(108,99,255,0.2)",
-            transition: "all 0.3s ease",
-            "&:hover": {
-              background: "linear-gradient(135deg, rgba(108,99,255,0.08), rgba(0,212,255,0.04))",
-              borderColor: "rgba(108,99,255,0.4)",
-            },
-          }}
-          onClick={() => document.getElementById("resume-upload-input").click()}
-        >
-          <input
-            id="resume-upload-input"
-            type="file"
-            hidden
-            accept=".pdf,.docx,.doc"
-            onChange={(e) => handleFile(e.target.files[0])}
-          />
+      <Box
+        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files[0]); }}
+        sx={{
+          p: { xs: 4, md: 6 },
+          borderRadius: 4,
+          textAlign: "center",
+          cursor: "pointer",
+          position: "relative",
+          bgcolor: dragOver
+            ? (isDark ? "#2B2824" : "#F0EBE4")
+            : "background.paper",
+          border: dragOver ? "2px solid" : "2px dashed",
+          borderColor: dragOver
+            ? "primary.main"
+            : (isDark ? "#3A352F" : "rgba(185, 111, 80, 0.25)"),
+          boxShadow: isDark ? "0 4px 20px rgba(0,0,0,0.35)" : "0 2px 12px rgba(51, 44, 40, 0.04)",
+          transition: "all 0.22s ease",
+          "&:hover": {
+            bgcolor: isDark ? "#282522" : "#FDFBF7",
+            borderColor: "primary.main",
+          },
+        }}
+        onClick={() => document.getElementById("resume-upload-input").click()}
+      >
+        <input
+          id="resume-upload-input"
+          type="file"
+          hidden
+          accept=".pdf"
+          onChange={(e) => handleFile(e.target.files[0])}
+        />
 
-          {!selectedFile ? (
-            <>
-              <motion.div animate={{ y: dragOver ? -4 : 0 }}>
-                <CloudUpload sx={{
-                  fontSize: 72,
-                  color: dragOver ? "#6C63FF" : "rgba(108,99,255,0.4)",
-                  mb: 2,
-                  transition: "color 0.3s ease",
-                }} />
-              </motion.div>
-              <Typography variant="h6" fontWeight={600} gutterBottom sx={{ fontSize: { xs: "1rem", md: "1.1rem" } }}>
-                {dragOver ? "Drop your file here" : "Drop your resume here or click to browse"}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Supports PDF, DOCX, DOC &mdash; Max 10MB
-              </Typography>
-            </>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <CheckCircle sx={{ fontSize: 64, color: "#22c55e", mb: 2 }} />
-              <Typography variant="h6" fontWeight={600} gutterBottom>
-                {selectedFile.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {formatFileSize(selectedFile.size)} &middot; Resume ready for analysis
-              </Typography>
+        {!selectedFile ? (
+          <>
+            <CloudUpload sx={{
+              fontSize: 64,
+              color: dragOver ? "primary.main" : (isDark ? "rgba(217, 149, 115, 0.5)" : "rgba(185, 111, 80, 0.4)"),
+              mb: 2,
+              transition: "color 0.2s ease",
+            }} />
+            <Typography variant="h6" fontWeight={700} gutterBottom sx={{ color: "text.primary", fontSize: { xs: "1rem", md: "1.15rem" } }}>
+              {dragOver ? "Drop your PDF resume here" : "Drag and drop your resume or click to browse"}
+            </Typography>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
+              Supports PDF documents only (Maximum 10 MB)
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1.5, justifyContent: "center", flexWrap: "wrap" }}>
               <Button
                 variant="outlined"
-                size="small"
-                startIcon={<Close />}
-                onClick={(e) => { e.stopPropagation(); setSelectedFile(null); setFile(null); }}
-                sx={{ borderRadius: 2, borderColor: "rgba(255,255,255,0.1)" }}
+                size="medium"
+                sx={{ borderRadius: 2.5, fontWeight: 700 }}
               >
-                Remove
+                Choose PDF File
               </Button>
-            </motion.div>
-          )}
-        </Box>
-      </motion.div>
-
-      {/* File Info */}
-      {selectedFile && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+              <Button
+                variant="outlined"
+                size="medium"
+                color="secondary"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleUseSampleResume();
+                }}
+                sx={{ borderRadius: 2.5, fontWeight: 700 }}
+              >
+                Use Sample Resume
+              </Button>
+            </Box>
+          </>
+        ) : (
           <Box sx={{
-            display: "flex", alignItems: "center", gap: 1.5, justifyContent: "center", mb: 3, mt: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            p: 2.5,
+            borderRadius: 3,
+            bgcolor: isDark ? "#2B2824" : "#FAF7F2",
+            border: `1px solid ${isDark ? "#3A352F" : "rgba(113, 134, 107, 0.3)"}`,
+            maxWidth: 440,
+            mx: "auto",
           }}>
-            <InsertDriveFile sx={{ color: "#6C63FF", fontSize: 20 }} />
-            <Typography variant="body2" fontWeight={600}>{selectedFile.name}</Typography>
-            <Typography variant="caption" color="text.secondary">({formatFileSize(selectedFile.size)})</Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, textAlign: "left" }}>
+              <Box sx={{ p: 1, borderRadius: 2, bgcolor: isDark ? "rgba(155, 175, 145, 0.2)" : "rgba(113, 134, 107, 0.15)", color: "secondary.main" }}>
+                <InsertDriveFile sx={{ fontSize: 24 }} />
+              </Box>
+              <Box sx={{ overflow: "hidden" }}>
+                <Typography variant="subtitle2" fontWeight={700} sx={{ color: "text.primary", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {selectedFile.name}
+                </Typography>
+                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                  {formatFileSize(selectedFile.size)} • PDF Ready
+                </Typography>
+              </Box>
+            </Box>
+            <Button
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedFile(null);
+                setFile(null);
+              }}
+              sx={{ color: "text.secondary", minWidth: 32, p: 0.5, "&:hover": { color: "error.main" } }}
+            >
+              <Close sx={{ fontSize: 18 }} />
+            </Button>
           </Box>
-        </motion.div>
+        )}
+      </Box>
+
+      {/* Error Alert */}
+      {error && (
+        <Alert severity="error" sx={{ mt: 2.5, borderRadius: 2.5 }} onClose={() => setError("")}>
+          {error}
+        </Alert>
       )}
 
-      {/* Submit Button */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <Button
-          variant="contained"
-          fullWidth
-          size="large"
-          disabled={!selectedFile || uploading}
-          onClick={async () => {
-            setUploading(true);
-            await uploadResume();
-            setUploading(false);
-          }}
-          sx={{
-            py: 1.5, fontSize: "1rem", borderRadius: 2,
-            background: "linear-gradient(135deg, #6C63FF, #00D4FF)",
-            "&:disabled": {
-              background: "rgba(255,255,255,0.06)",
-              color: "rgba(255,255,255,0.2)",
-            },
-            "&:hover:not(:disabled)": {
-              boxShadow: "0 8px 30px rgba(108,99,255,0.4)",
-            },
-          }}
-        >
-          <CloudUpload sx={{ mr: 1.5, fontSize: 20 }} />
-          {uploading ? "Processing..." : "Analyze Resume & Start Interview"}
-        </Button>
-      </motion.div>
+      {/* Start Button */}
+      {selectedFile && (
+        <Box sx={{ mt: 3.5, textAlign: "center" }}>
+          <Button
+            variant="contained"
+            size="large"
+            disabled={uploading}
+            onClick={async () => {
+              setUploading(true);
+              try {
+                await uploadResume();
+              } finally {
+                setUploading(false);
+              }
+            }}
+            sx={{
+              px: 5,
+              py: 1.5,
+              fontSize: "1rem",
+              fontWeight: 700,
+              borderRadius: 2.5,
+            }}
+          >
+            {uploading ? "Analyzing your resume..." : "Start Interview Practice"}
+          </Button>
+        </Box>
+      )}
     </motion.div>
   );
 }

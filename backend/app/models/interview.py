@@ -1,6 +1,6 @@
 """Interview session models - both in-memory session and DB persistence.
 
-Session state is now isolated per authenticated user via InterviewSessionManager.
+Session state is isolated per authenticated user via InterviewSessionManager.
 """
 
 import json
@@ -23,6 +23,7 @@ class InterviewSessionDB(Base):
     scores_json = Column(Text, default="[]")
     current_question = Column(Integer, default=0)
     completed = Column(Integer, default=0)
+    is_demo = Column(Integer, default=0)
 
     user = relationship("User")
 
@@ -52,10 +53,12 @@ class InterviewSession:
         self.scores = []
         self.current_question = 0
         self.db_session_id = None
+        self.is_demo = False
 
-    def load_questions(self, questions):
+    def load_questions(self, questions: list, is_demo: bool = False):
         self.reset()
-        self.questions = questions
+        self.questions = list(questions)
+        self.is_demo = is_demo
 
     def get_next_question(self):
         if self.current_question >= len(self.questions):
@@ -64,13 +67,27 @@ class InterviewSession:
         self.current_question += 1
         return question
 
-    def save_answer(self, answer):
-        self.answers.append(answer)
+    def save_answer(self, answer: str):
+        """Save or update the answer for the current question to prevent duplicates on retries."""
+        idx = max(0, self.current_question - 1)
+        if idx < len(self.answers):
+            self.answers[idx] = answer
+        else:
+            self.answers.append(answer)
 
-    def save_feedback(self, feedback):
-        self.feedbacks.append(feedback)
-        if isinstance(feedback, dict) and "score" in feedback:
-            self.scores.append(feedback["score"])
+    def save_feedback(self, feedback: dict):
+        """Save or update feedback and extract score for the current question."""
+        idx = max(0, self.current_question - 1)
+        score = feedback.get("score") if isinstance(feedback, dict) else None
+
+        if idx < len(self.feedbacks):
+            self.feedbacks[idx] = feedback
+            if score is not None and idx < len(self.scores):
+                self.scores[idx] = score
+        else:
+            self.feedbacks.append(feedback)
+            if score is not None:
+                self.scores.append(score)
 
     def average_score(self):
         if len(self.scores) == 0:
@@ -86,12 +103,14 @@ class InterviewSession:
             "answers": self.answers,
             "feedbacks": self.feedbacks,
             "scores": self.scores,
+            "is_demo": self.is_demo,
         }
 
     def persist_to_db(self, user_id: int):
         from app.database import SessionLocal
         db = SessionLocal()
         try:
+            is_completed = 1 if len(self.questions) > 0 and len(self.answers) >= len(self.questions) else 0
             if self.db_session_id:
                 rec = db.query(InterviewSessionDB).filter_by(id=self.db_session_id).first()
                 if rec:
@@ -99,50 +118,73 @@ class InterviewSession:
                     rec.feedbacks_json = json.dumps(self.feedbacks)
                     rec.scores_json = json.dumps(self.scores)
                     rec.current_question = self.current_question
-                    rec.completed = 1 if self.current_question >= len(self.questions) else 0
-            else:
-                rec = InterviewSessionDB(
-                    user_id=user_id,
-                    total_questions=len(self.questions),
-                    questions_json=json.dumps(self.questions),
-                    answers_json=json.dumps(self.answers),
-                    feedbacks_json=json.dumps(self.feedbacks),
-                    scores_json=json.dumps(self.scores),
-                    current_question=self.current_question,
-                    completed=0,
-                )
-                db.add(rec)
-                db.commit()
-                db.refresh(rec)
-                self.db_session_id = rec.id
+                    rec.completed = is_completed
+                    rec.is_demo = 1 if self.is_demo else 0
+                    db.commit()
+                    return
+
+            rec = InterviewSessionDB(
+                user_id=user_id,
+                total_questions=len(self.questions),
+                questions_json=json.dumps(self.questions),
+                answers_json=json.dumps(self.answers),
+                feedbacks_json=json.dumps(self.feedbacks),
+                scores_json=json.dumps(self.scores),
+                current_question=self.current_question,
+                completed=is_completed,
+                is_demo=1 if self.is_demo else 0,
+            )
+            db.add(rec)
             db.commit()
+            db.refresh(rec)
+            self.db_session_id = rec.id
+        except Exception:
+            db.rollback()
+            raise
         finally:
             db.close()
 
 
 class InterviewSessionManager:
-    """Manages per-user interview sessions in memory.
-
-    Each authenticated user gets their own InterviewSession instance,
-    preventing cross-user interference while keeping the existing API identical.
-    """
+    """Manages isolated InterviewSession instances per authenticated user."""
 
     def __init__(self):
         self._sessions: dict[int, InterviewSession] = {}
 
     def get_session(self, user_id: int) -> InterviewSession:
-        """Return the interview session for a given user.
-
-        Creates a new session if one does not exist.
-        """
         if user_id not in self._sessions:
-            self._sessions[user_id] = InterviewSession()
+            sess = InterviewSession()
+            # Restore state from database if available
+            self._restore_from_db(user_id, sess)
+            self._sessions[user_id] = sess
         return self._sessions[user_id]
 
-    def remove_session(self, user_id: int) -> None:
-        """Remove a user's session (e.g. on completion or reset)."""
-        self._sessions.pop(user_id, None)
+    def _restore_from_db(self, user_id: int, sess: InterviewSession):
+        from app.database import SessionLocal
+        db = SessionLocal()
+        try:
+            rec = (
+                db.query(InterviewSessionDB)
+                .filter_by(user_id=user_id)
+                .order_by(InterviewSessionDB.id.desc())
+                .first()
+            )
+            if rec and rec.questions_json:
+                sess.questions = rec.get_questions()
+                sess.answers = rec.get_answers()
+                sess.feedbacks = rec.get_feedbacks()
+                sess.scores = rec.get_scores()
+                sess.current_question = rec.current_question or len(sess.answers)
+                sess.db_session_id = rec.id
+                sess.is_demo = bool(getattr(rec, "is_demo", 0))
+        except Exception:
+            pass
+        finally:
+            db.close()
+
+    def clear_session(self, user_id: int):
+        if user_id in self._sessions:
+            del self._sessions[user_id]
 
 
-# Singleton manager – the only global state, keyed by user_id
 session_manager = InterviewSessionManager()

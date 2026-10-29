@@ -2,35 +2,40 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog, DialogContent, TextField, Button, Typography,
-  Box, IconButton, Avatar, Tab, Tabs, Alert, CircularProgress, InputAdornment,
+  Box, IconButton, Avatar, Tab, Tabs, Alert, CircularProgress, InputAdornment, useTheme,
 } from "@mui/material";
 import { Close, Visibility, VisibilityOff, Psychology, Email, Person, Lock } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
 
-const inputSx = {
-  "& .MuiOutlinedInput-root": {
-    borderRadius: 2,
-    transition: "all 200ms ease",
-    "&:hover": { background: "rgba(255,255,255,0.05)" },
-    "&.Mui-focused": {
-      background: "rgba(108,99,255,0.06)",
-      "& fieldset": { borderColor: "#6C63FF", borderWidth: 2 },
-    },
-    "& fieldset": { borderColor: "rgba(255,255,255,0.08)" },
-  },
-  "& .MuiInputLabel-root": {
-    fontWeight: 500,
-    "&.Mui-focused": { color: "#6C63FF" },
-  },
-  "& .MuiInputAdornment-root .MuiSvgIcon-root": { color: "text.secondary", fontSize: 20 },
-};
-
 export default function AuthModal({ open, onClose }) {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const { login, signup } = useAuth();
   const [tab, setTab] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const inputSx = {
+    "& .MuiOutlinedInput-root": {
+      borderRadius: 2.5,
+      bgcolor: isDark ? "#2B2824" : "#FAF7F2",
+      color: theme.palette.text.primary,
+      transition: "all 200ms ease",
+      "&:hover": { bgcolor: isDark ? "#332F2A" : "#F5EFE6" },
+      "&.Mui-focused": {
+        bgcolor: isDark ? "#22201D" : "#FFFFFF",
+        "& fieldset": { borderColor: theme.palette.primary.main, borderWidth: 2 },
+      },
+      "& fieldset": { borderColor: isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(56, 47, 42, 0.12)" },
+    },
+    "& .MuiInputLabel-root": {
+      color: theme.palette.text.secondary,
+      fontWeight: 500,
+      "&.Mui-focused": { color: theme.palette.primary.main },
+    },
+    "& .MuiInputAdornment-root .MuiSvgIcon-root": { color: theme.palette.text.secondary, fontSize: 20 },
+  };
 
   // Login form
   const [loginUsername, setLoginUsername] = useState("");
@@ -53,7 +58,7 @@ export default function AuthModal({ open, onClose }) {
       await login(loginUsername.trim(), loginPassword);
       handleClose();
     } catch (err) {
-      setError(err.response?.data?.detail || "Login failed. Please try again.");
+      setError(err.response?.data?.detail || "Login failed. Please check credentials.");
     } finally { setLoading(false); }
   };
 
@@ -83,10 +88,9 @@ export default function AuthModal({ open, onClose }) {
         paper: {
           sx: {
             borderRadius: 4,
-            background: "rgba(17,17,40,0.96)",
-            backdropFilter: "blur(32px)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
+            bgcolor: isDark ? "#22201D" : "#FFFEFC",
+            border: `1px solid ${isDark ? "#3A352F" : "rgba(56, 47, 42, 0.1)"}`,
+            boxShadow: isDark ? "0 24px 60px rgba(0, 0, 0, 0.55)" : "0 24px 60px rgba(56, 47, 42, 0.15)",
             overflow: "hidden",
           },
         },
@@ -98,23 +102,22 @@ export default function AuthModal({ open, onClose }) {
       }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
           <Avatar sx={{
-            bgcolor: "transparent",
-            border: "2px solid #6C63FF",
+            bgcolor: isDark ? "rgba(217, 149, 115, 0.16)" : "rgba(185, 111, 80, 0.12)",
+            border: `2px solid ${theme.palette.primary.main}`,
             width: 36, height: 36,
           }}>
-            <Psychology sx={{ color: "#6C63FF", fontSize: 20 }} />
+            <Psychology sx={{ color: theme.palette.primary.main, fontSize: 20 }} />
           </Avatar>
           <Box>
-            <Typography variant="h6" fontWeight={700} sx={{ lineHeight: 1.2 }}>
-              {tab === 0 ? "Welcome Back" : "Create Account"}
+            <Typography variant="h6" fontWeight={800} sx={{ color: theme.palette.text.primary, lineHeight: 1.2 }}>
+              {tab === 0 ? "Welcome to CareerPilot AI" : "Join CareerPilot AI"}
             </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {tab === 0 ? "Sign in to continue" : "Start your interview journey"}
+            <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
+              {tab === 0 ? "Sign in to access your interview workspace" : "Create your career preparation account"}
             </Typography>
           </Box>
         </Box>
-        <IconButton onClick={handleClose} size="small"
-          sx={{ color: "text.secondary", "&:hover": { background: "rgba(255,255,255,0.05)" } }}>
+        <IconButton onClick={handleClose} size="small" sx={{ color: theme.palette.text.secondary }}>
           <Close />
         </IconButton>
       </Box>
@@ -126,13 +129,13 @@ export default function AuthModal({ open, onClose }) {
         "& .MuiTabs-indicator": {
           height: 3,
           borderRadius: 1.5,
-          background: "linear-gradient(90deg, #6C63FF, #00D4FF)",
+          bgcolor: theme.palette.primary.main,
         },
         "& .MuiTab-root": {
-          textTransform: "none", fontWeight: 600, fontSize: "0.9rem",
+          textTransform: "none", fontWeight: 700, fontSize: "0.9rem",
           minHeight: 36, py: 0.5, px: 2,
-          color: "text.secondary",
-          "&.Mui-selected": { color: "#f0f0f5" },
+          color: theme.palette.text.secondary,
+          "&.Mui-selected": { color: theme.palette.primary.main },
         },
       }}>
         <Tab label="Login" />
@@ -143,18 +146,18 @@ export default function AuthModal({ open, onClose }) {
         <AnimatePresence mode="wait">
           {tab === 0 ? (
             <motion.form key="login" onSubmit={handleLogin}
-              initial={{ opacity: 0, x: -15 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 15 }}
+              exit={{ opacity: 0, x: 10 }}
               transition={{ duration: 0.2 }}>
-              <TextField fullWidth label="Username" variant="outlined"
+              <TextField fullWidth label="Username or Email" variant="outlined"
                 value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)}
                 sx={{ mb: 2, ...inputSx }}
                 slotProps={{
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Person sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                        <Person sx={{ fontSize: 20, color: theme.palette.text.secondary, opacity: 0.7 }} />
                       </InputAdornment>
                     ),
                   },
@@ -168,13 +171,13 @@ export default function AuthModal({ open, onClose }) {
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Lock sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                        <Lock sx={{ fontSize: 20, color: theme.palette.text.secondary, opacity: 0.7 }} />
                       </InputAdornment>
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton size="small" onClick={() => setShowPassword(!showPassword)}
-                          sx={{ color: "text.secondary" }}>
+                          sx={{ color: theme.palette.text.secondary }}>
                           {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                         </IconButton>
                       </InputAdornment>
@@ -182,42 +185,42 @@ export default function AuthModal({ open, onClose }) {
                   },
                 }} />
 
-              <AnimatePresence>
-                {error && (
-                  <motion.div initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}>
-                    <Alert severity="error" sx={{ mt: 1, mb: 1, borderRadius: 2, py: 0.5 }}>
-                      {error}
-                    </Alert>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {error && (
+                <Alert severity="error" sx={{ mt: 1.5, mb: 1, borderRadius: 2, py: 0.5 }}>
+                  {error}
+                </Alert>
+              )}
 
               <Button type="submit" variant="contained" fullWidth disabled={loading}
                 sx={{
-                  mt: 2, py: 1.5, fontSize: "0.95rem",
-                  background: "linear-gradient(135deg, #6C63FF, #00D4FF)",
-                  "&:disabled": { background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.3)" },
-                  borderRadius: 2,
+                  mt: 2, py: 1.4, fontSize: "0.95rem",
+                  bgcolor: theme.palette.primary.main,
+                  color: isDark ? "#171614" : "#FFFFFF",
+                  fontWeight: 700,
+                  "&:hover:not(:disabled)": { bgcolor: theme.palette.primary.dark },
+                  "&:disabled": {
+                    bgcolor: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(56, 47, 42, 0.08)",
+                    color: isDark ? "#6E655E" : "#9C9189"
+                  },
+                  borderRadius: 2.5,
                 }}>
-                {loading ? <CircularProgress size={22} sx={{ color: "white" }} /> : "Login"}
+                {loading ? <CircularProgress size={22} sx={{ color: "white" }} /> : "Log In"}
               </Button>
             </motion.form>
           ) : (
             <motion.form key="signup" onSubmit={handleSignup}
-              initial={{ opacity: 0, x: 15 }}
+              initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -15 }}
+              exit={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.2 }}>
-              <TextField fullWidth label="Email" type="email" variant="outlined"
+              <TextField fullWidth label="Email Address" type="email" variant="outlined"
                 value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)}
                 sx={{ mb: 2, ...inputSx }}
                 slotProps={{
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Email sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                        <Email sx={{ fontSize: 20, color: theme.palette.text.secondary, opacity: 0.7 }} />
                       </InputAdornment>
                     ),
                   },
@@ -230,7 +233,7 @@ export default function AuthModal({ open, onClose }) {
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Person sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                        <Person sx={{ fontSize: 20, color: theme.palette.text.secondary, opacity: 0.7 }} />
                       </InputAdornment>
                     ),
                   },
@@ -244,13 +247,13 @@ export default function AuthModal({ open, onClose }) {
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Lock sx={{ fontSize: 20, color: "text.secondary", opacity: 0.5 }} />
+                        <Lock sx={{ fontSize: 20, color: theme.palette.text.secondary, opacity: 0.7 }} />
                       </InputAdornment>
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton size="small" onClick={() => setShowPassword(!showPassword)}
-                          sx={{ color: "text.secondary" }}>
+                          sx={{ color: theme.palette.text.secondary }}>
                           {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                         </IconButton>
                       </InputAdornment>
@@ -258,33 +261,30 @@ export default function AuthModal({ open, onClose }) {
                   },
                 }} />
 
-              {/* Password hint */}
               {signupPassword.length > 0 && signupPassword.length < 6 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <Typography variant="caption" color="error" sx={{ display: "block", mb: 1, ml: 0.5 }}>
-                    Minimum 6 characters required
-                  </Typography>
-                </motion.div>
+                <Typography variant="caption" color="error" sx={{ display: "block", mb: 1, ml: 0.5 }}>
+                  Minimum 6 characters required
+                </Typography>
               )}
 
-              <AnimatePresence>
-                {error && (
-                  <motion.div initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}>
-                    <Alert severity="error" sx={{ mt: 1, mb: 1, borderRadius: 2, py: 0.5 }}>
-                      {error}
-                    </Alert>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {error && (
+                <Alert severity="error" sx={{ mt: 1.5, mb: 1, borderRadius: 2, py: 0.5 }}>
+                  {error}
+                </Alert>
+              )}
 
               <Button type="submit" variant="contained" fullWidth disabled={loading}
                 sx={{
-                  mt: 2, py: 1.5, fontSize: "0.95rem",
-                  background: "linear-gradient(135deg, #6C63FF, #00D4FF)",
-                  "&:disabled": { background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.3)" },
-                  borderRadius: 2,
+                  mt: 2, py: 1.4, fontSize: "0.95rem",
+                  bgcolor: theme.palette.primary.main,
+                  color: isDark ? "#171614" : "#FFFFFF",
+                  fontWeight: 700,
+                  "&:hover:not(:disabled)": { bgcolor: theme.palette.primary.dark },
+                  "&:disabled": {
+                    bgcolor: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(56, 47, 42, 0.08)",
+                    color: isDark ? "#6E655E" : "#9C9189"
+                  },
+                  borderRadius: 2.5,
                 }}>
                 {loading ? <CircularProgress size={22} sx={{ color: "white" }} /> : "Create Account"}
               </Button>

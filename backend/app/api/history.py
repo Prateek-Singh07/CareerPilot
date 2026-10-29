@@ -37,6 +37,7 @@ def get_history(
             "questions_answered": len(json.loads(s.answers_json) if s.answers_json else []),
             "average_score": avg_score,
             "completed": bool(s.completed),
+            "is_demo": bool(getattr(s, "is_demo", 0)),
         })
 
     return {"sessions": result, "total": len(result)}

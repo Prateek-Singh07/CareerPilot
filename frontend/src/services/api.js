@@ -6,17 +6,17 @@ const api = axios.create({
   baseURL: API_BASE,
 });
 
-// Axios auto-detects the Content-Type:
-// - For JSON data: application/json (default)
-// - For FormData: multipart/form-data (with boundary)
-// Do NOT set a hardcoded Content-Type here, or file uploads will break.
-
-// Request interceptor: attach JWT token from localStorage
+// Request interceptor: attach JWT token and Demo Mode header if enabled
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("auth_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    // If client has enabled Presentation Demo Mode, propagate header to backend
+    const isDemo = localStorage.getItem("careerpilot_demo_mode") === "true";
+    if (isDemo) {
+      config.headers["X-Demo-Mode"] = "true";
     }
     return config;
   },
@@ -30,7 +30,6 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem("auth_token");
       localStorage.removeItem("auth_user");
-      // Dispatch a custom event so AuthContext can react
       window.dispatchEvent(new Event("auth:logout"));
     }
     return Promise.reject(error);
