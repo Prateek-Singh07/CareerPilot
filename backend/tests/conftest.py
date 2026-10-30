@@ -75,17 +75,8 @@ def client(db):
 @pytest.fixture
 def demo_user(client, db):
     """Retrieve or create the verified demo user in the test database."""
-    user = db.query(User).filter(User.username == "demo").first()
-    if not user:
-        user = User(
-            email="demo@careerpilot.ai",
-            username="demo",
-            hashed_password=get_password_hash("Demo@123"),
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    return user
+    from app.auth import ensure_demo_user
+    return ensure_demo_user(db)
 
 
 @pytest.fixture

@@ -14,6 +14,9 @@ from app.auth import (
     verify_password,
     create_access_token,
     get_current_user,
+    ensure_demo_user,
+    DEMO_USERNAME,
+    DEMO_EMAIL,
 )
 
 router = APIRouter(prefix="/api/auth", tags=["Auth"])
@@ -68,12 +71,24 @@ def login(request: Request, req: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
     # Match identifier against username OR email, case-insensitively
-    user = db.query(User).filter(
-        or_(
-            func.lower(User.username) == identifier.lower(),
-            func.lower(User.email) == identifier.lower(),
-        )
-    ).first()
+    query_conditions = [
+        func.lower(User.username) == identifier.lower(),
+        func.lower(User.email) == identifier.lower(),
+    ]
+
+    is_demo_ident = identifier.lower() in ("demo", "demo@hirepilot.app", "demo@careerpilot.ai")
+    if is_demo_ident:
+        query_conditions.extend([
+            func.lower(User.username) == DEMO_USERNAME,
+            func.lower(User.email) == DEMO_EMAIL,
+            func.lower(User.email) == "demo@careerpilot.ai",
+        ])
+
+    user = db.query(User).filter(or_(*query_conditions)).first()
+
+    # Self-healing demo account: if identifier is demo and user is missing, initialize it
+    if not user and is_demo_ident:
+        user = ensure_demo_user(db)
 
     if not user:
         # Hash a dummy password to maintain constant execution timing and prevent user enumeration
@@ -81,7 +96,13 @@ def login(request: Request, req: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
     if not verify_password(req.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid username or password")
+        # If this is the demo account and password was Demo@123, attempt a repair if hash was corrupted
+        if is_demo_ident and req.password == "Demo@123":
+            user = ensure_demo_user(db)
+            if not verify_password(req.password, user.hashed_password):
+                raise HTTPException(status_code=401, detail="Invalid username or password")
+        else:
+            raise HTTPException(status_code=401, detail="Invalid username or password")
 
     token = create_access_token(data={"sub": str(user.id)})
     return TokenResponse(access_token=token)

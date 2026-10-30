@@ -58,7 +58,13 @@ export default function AuthModal({ open, onClose }) {
       await login(loginUsername.trim(), loginPassword);
       handleClose();
     } catch (err) {
-      setError(err.response?.data?.detail || "Login failed. Please check credentials.");
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else if (err.message === "Network Error" || !err.response) {
+        setError("Unable to connect to the backend server. Please verify the backend is running and CORS allows this origin.");
+      } else {
+        setError("Login failed. Please check credentials.");
+      }
     } finally { setLoading(false); }
   };
 
@@ -75,7 +81,13 @@ export default function AuthModal({ open, onClose }) {
       await signup(signupEmail.trim(), signupUsername.trim(), signupPassword);
       handleClose();
     } catch (err) {
-      setError(err.response?.data?.detail || "Signup failed. Please try again.");
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else if (err.message === "Network Error" || !err.response) {
+        setError("Unable to connect to the backend server. Please verify the backend is running and CORS allows this origin.");
+      } else {
+        setError("Signup failed. Please try again.");
+      }
     } finally { setLoading(false); }
   };
 

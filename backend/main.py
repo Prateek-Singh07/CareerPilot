@@ -120,18 +120,20 @@ def create_app() -> FastAPI:
         "allow_headers": ["*"],
     }
     cors_env = os.getenv("CORS_ORIGINS")
+    origins = [
+        "https://career-pilot-silk-zeta.vercel.app",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
     if cors_env:
-        cors_kwargs["allow_origins"] = [
-            origin.strip() for origin in cors_env.split(",")
-        ]
-    else:
-        logger.info(
-            "CORS_ORIGINS not set — allowing all localhost origins. "
-            "Set CORS_ORIGINS (comma-separated) in .env for production."
-        )
-        cors_kwargs["allow_origin_regex"] = (
-            r"https?://(localhost|127\.0\.0\.1)(:[0-9]+)?"
-        )
+        for origin in cors_env.split(","):
+            cleaned = origin.strip()
+            if cleaned and cleaned not in origins:
+                origins.append(cleaned)
+    cors_kwargs["allow_origins"] = origins
+    cors_kwargs["allow_origin_regex"] = (
+        r"^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$|^https://.*\.vercel\.app$"
+    )
     app.add_middleware(CORSMiddleware, **cors_kwargs)
 
     # ── Rate limit error handler ─────────────────────────────
@@ -222,45 +224,26 @@ def create_app() -> FastAPI:
             "service": "careerpilot-api",
         }
 
-    # ── Startup: init DB ─────────────────────────────────────
+    # ── Startup: init DB & demo user ─────────────────────────
     @app.on_event("startup")
     def on_startup():
         logger.info("Initializing CareerPilot AI API [service=careerpilot-api]")
         init_db()
         logger.info("CareerPilot AI database initialized")
 
-        # Create demo account in development mode (CAREERPILOT_ENV or HIREPILOT_ENV = development)
-        env_mode = os.getenv("CAREERPILOT_ENV", os.getenv("HIREPILOT_ENV", "development")).lower()
-        if env_mode == "development":
+        # Safely ensure demo user exists and is properly configured
+        if os.getenv("DISABLE_DEMO_ACCOUNT", "").lower() not in ("true", "1", "yes"):
             try:
                 from app.database import SessionLocal
-                from app.models.user import User
-                from app.auth import get_password_hash
-                from sqlalchemy import func, or_
+                from app.auth import ensure_demo_user
                 db = SessionLocal()
                 try:
-                    existing = db.query(User).filter(
-                        or_(
-                            func.lower(User.username) == "demo",
-                            func.lower(User.email) == "demo@careerpilot.ai",
-                            func.lower(User.email) == "demo@hirepilot.app",
-                        )
-                    ).first()
-                    if not existing:
-                        demo_user = User(
-                            email="demo@careerpilot.ai",
-                            username="demo",
-                            hashed_password=get_password_hash("Demo@123"),
-                        )
-                        db.add(demo_user)
-                        db.commit()
-                        logger.info("Demo account created: demo / Demo@123 (demo@careerpilot.ai)")
-                    else:
-                        logger.info("Demo account already present: %s", existing.username)
+                    demo_user = ensure_demo_user(db)
+                    logger.info("Demo account verified: username=%s email=%s", demo_user.username, demo_user.email)
                 finally:
                     db.close()
             except Exception as exc:
-                logger.warning("Could not create demo account: %s", exc)
+                logger.warning("Could not initialize demo account: %s", exc)
 
     @app.on_event("shutdown")
     def on_shutdown():
